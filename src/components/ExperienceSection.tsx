@@ -119,13 +119,15 @@ export default function ExperienceSection() {
   >([]);
 
   useEffect(() => {
-    setSparkles(
-      [...Array(12)].map(() => ({
-        top: `${10 + Math.random() * 80}%`,
-        left: `${5 + Math.random() * 90}%`,
-        delay: Math.random() * 4,
-      }))
-    );
+    requestAnimationFrame(() => {
+      setSparkles(
+        [...Array(12)].map(() => ({
+          top: `${10 + Math.random() * 80}%`,
+          left: `${5 + Math.random() * 90}%`,
+          delay: Math.random() * 4,
+        }))
+      );
+    });
   }, []);
 
   return (

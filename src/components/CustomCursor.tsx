@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 export default function CustomCursor() {
   const [isClicking, setIsClicking] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [particles, setParticles] = useState<{ id: number; x: number; y: number; type: 'click' | 'trail' }[]>([]);
+  const [particles, setParticles] = useState<{ id: number; x: number; y: number; type: 'click' | 'trail'; offsetX?: number; offsetY?: number }[]>([]);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -46,7 +46,9 @@ export default function CustomCursor() {
         id: Date.now() + i,
         x: e.clientX,
         y: e.clientY,
-        type: 'click' as const
+        type: 'click' as const,
+        offsetX: (Math.random() - 0.5) * 80,
+        offsetY: (Math.random() - 0.5) * 80 - 40,
       }));
       setParticles((prev) => [...prev, ...burst]);
     };
@@ -58,7 +60,7 @@ export default function CustomCursor() {
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
+      window.removeFiles("mousemove", moveCursor);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
     };
@@ -100,8 +102,8 @@ export default function CustomCursor() {
               key={p.id}
               initial={{ x: p.x, y: p.y, opacity: 1, scale: 0 }}
               animate={{
-                x: p.x + (Math.random() - 0.5) * 80,
-                y: p.y + (Math.random() - 0.5) * 80 - 40,
+                x: p.x + (p.offsetX || 0),
+                y: p.y + (p.offsetY || 0),
                 opacity: 0,
                 scale: 1.5,
               }}

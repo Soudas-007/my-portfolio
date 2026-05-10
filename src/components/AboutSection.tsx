@@ -7,13 +7,15 @@ export default function AboutSection() {
   const [particles, setParticles] = useState<{ top: string; left: string; delay: number; duration: number; xMove: number }[]>([]);
 
   useEffect(() => {
-    setParticles([...Array(15)].map(() => ({
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-      delay: Math.random() * 3,
-      duration: 8 + Math.random() * 5,
-      xMove: (Math.random() - 0.5) * 30
-    })));
+    requestAnimationFrame(() => {
+      setParticles([...Array(15)].map(() => ({
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        delay: Math.random() * 3,
+        duration: 8 + Math.random() * 5,
+        xMove: (Math.random() - 0.5) * 30
+      })));
+    });
   }, []);
 
   const skills = [
@@ -151,7 +153,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             className="text-secondary font-semibold text-lg leading-relaxed mb-8"
           >
-            I'm a UI/UX Designer who believes digital products shouldn't just be usable—they should be memorable. By blending modern product design with playful, nostalgic aesthetics, I create experiences that make people smile while driving real business value.
+            I&apos;m a UI/UX Designer who believes digital products shouldn&apos;t just be usable—they should be memorable. By blending modern product design with playful, nostalgic aesthetics, I create experiences that make people smile while driving real business value.
           </motion.p>
 
           {/* Skills Grid */}

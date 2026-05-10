@@ -16,16 +16,18 @@ export default function ContactSection() {
   const moonY = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   useEffect(() => {
-    // Generate random stars only on the client side to avoid hydration mismatch
-    const generatedStars = [...Array(30)].map(() => ({
-      top: `${Math.random() * 80}%`,
-      left: `${Math.random() * 100}%`,
-      width: `${Math.random() * 4 + 2}px`,
-      height: `${Math.random() * 4 + 2}px`,
-      delay: Math.random() * 2,
-      duration: 2 + Math.random() * 3,
-    }));
-    setStars(generatedStars);
+    requestAnimationFrame(() => {
+      // Generate random stars only on the client side to avoid hydration mismatch
+      const generatedStars = [...Array(30)].map(() => ({
+        top: `${Math.random() * 80}%`,
+        left: `${Math.random() * 100}%`,
+        width: `${Math.random() * 4 + 2}px`,
+        height: `${Math.random() * 4 + 2}px`,
+        delay: Math.random() * 2,
+        duration: 2 + Math.random() * 3,
+      }));
+      setStars(generatedStars);
+    });
   }, []);
 
   return (
@@ -115,7 +117,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
           className="font-pixel text-5xl md:text-7xl font-bold mb-6 drop-shadow-[4px_4px_0px_#1A1A1A]"
         >
-          LET'S WORK TOGETHER
+          LET&apos;S WORK TOGETHER
         </motion.h2>
         
         <motion.p 
@@ -126,7 +128,7 @@ export default function ContactSection() {
           className="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed font-semibold"
         >
           Have a playful project in mind? Looking for a designer who codes? 
-          Drop me a message and let's create something memorable.
+          Drop me a message and let&apos;s create something memorable.
         </motion.p>
         
         <motion.button

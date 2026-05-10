@@ -352,23 +352,25 @@ export default function HeroSection() {
   >([]);
 
   useEffect(() => {
-    setParticles(
-      [...Array(18)].map(() => ({
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        xMove: (Math.random() - 0.5) * 40,
-        duration: 10 + Math.random() * 10,
-        delay: Math.random() * 5,
-      }))
-    );
-    setSparkles(
-      [...Array(8)].map(() => ({
-        top: `${15 + Math.random() * 70}%`,
-        left: `${10 + Math.random() * 80}%`,
-        delay: Math.random() * 4,
-        size: 8 + Math.random() * 8,
-      }))
-    );
+    requestAnimationFrame(() => {
+      setParticles(
+        [...Array(18)].map(() => ({
+          top: `${Math.random() * 100}%`,
+          left: `${Math.random() * 100}%`,
+          xMove: (Math.random() - 0.5) * 40,
+          duration: 10 + Math.random() * 10,
+          delay: Math.random() * 5,
+        }))
+      );
+      setSparkles(
+        [...Array(8)].map(() => ({
+          top: `${15 + Math.random() * 70}%`,
+          left: `${10 + Math.random() * 80}%`,
+          delay: Math.random() * 4,
+          size: 8 + Math.random() * 8,
+        }))
+      );
+    });
   }, []);
 
   /* ─ cursor parallax for title depth ─ */

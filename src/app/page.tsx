@@ -1,5 +1,5 @@
 import HeroSection from "@/components/HeroSection";
-import ScrollytellingCanvas from "@/components/ScrollytellingCanvas";
+// import ScrollytellingCanvas from "@/components/ScrollytellingCanvas";
 import CaseStudies from "@/components/CaseStudies";
 import ExperienceSection from "@/components/ExperienceSection";
 import AboutSection from "@/components/AboutSection";

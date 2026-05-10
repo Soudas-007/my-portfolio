@@ -403,13 +403,15 @@ export default function ToolboxSection() {
   const [sparkles, setSparkles] = useState<{ top: string; left: string; delay: number }[]>([]);
 
   useEffect(() => {
-    setSparkles(
-      [...Array(10)].map(() => ({
-        top: `${8 + Math.random() * 84}%`,
-        left: `${4 + Math.random() * 92}%`,
-        delay: Math.random() * 4,
-      }))
-    );
+    requestAnimationFrame(() => {
+      setSparkles(
+        [...Array(10)].map(() => ({
+          top: `${8 + Math.random() * 84}%`,
+          left: `${4 + Math.random() * 92}%`,
+          delay: Math.random() * 4,
+        }))
+      );
+    });
   }, []);
 
   return (
