@@ -125,7 +125,7 @@ function FloatingNavbar() {
             href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
             target="_blank"
             whileHover={{ scale: 1.05 }}
-            className="px-3 py-1.5 bg-[var(--color-accent-yellow)] border-2 border-primary rounded-lg font-pixel text-[9px] font-bold text-primary shadow-[2px_2px_0px_var(--color-primary)]"
+            className="px-4 py-2.5 bg-[var(--color-accent-yellow)] border-2 md:border-3 border-primary rounded-xl md:rounded-2xl font-bold text-[10px] md:text-xs text-primary shadow-[4px_4px_0px_var(--color-pixel-dark)] transition-all flex items-center justify-center"
           >
             View Resume 📄
           </motion.a>
