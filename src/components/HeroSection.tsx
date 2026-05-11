@@ -208,7 +208,10 @@ function ResumeWidget() {
       transition={{ delay: 1.4 }}
       className="absolute bottom-24 sm:bottom-28 left-[4%] sm:left-[10%] pointer-events-auto z-20 hidden sm:block"
     >
-      <motion.div
+      <motion.a
+        href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
         animate={{ y: [0, -5, 0], rotate: [-1, 1, -1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         whileHover={{ scale: 1.08, y: -8 }}
@@ -225,7 +228,7 @@ function ResumeWidget() {
           <div className="text-sm font-bold text-primary font-pixel">View Resume</div>
           <div className="text-[10px] font-semibold text-secondary">Available for Opportunities</div>
         </div>
-      </motion.div>
+      </motion.a>
     </motion.div>
   );
 }
