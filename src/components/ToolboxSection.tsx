@@ -1,16 +1,93 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
-/* ════════════════════════════════════════════════════
-   SPARKLE
-   ════════════════════════════════════════════════════ */
+/* ── Software SVG Icons ── */
+function FigmaIcon() {
+  return (
+    <svg viewBox="0 0 38 57" fill="none" className="w-full h-full">
+      <path d="M19 28.5A9.5 9.5 0 1 1 28.5 19 9.5 9.5 0 0 1 19 28.5z" fill="#1ABCFE"/>
+      <path d="M9.5 47.5A9.5 9.5 0 0 1 19 38v9.5a9.5 9.5 0 0 1-9.5 9.5z" fill="#0ACF83"/>
+      <path d="M0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z" fill="#A259FF"/>
+      <path d="M0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5z" fill="#F24E1E"/>
+      <path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19z" fill="#FF7262"/>
+    </svg>
+  );
+}
+
+function PhotoshopIcon() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <rect width="100" height="100" rx="18" fill="#001E36"/>
+      <text x="50" y="68" textAnchor="middle" fill="#31A8FF" fontFamily="Arial" fontWeight="900" fontSize="48">Ps</text>
+    </svg>
+  );
+}
+
+function IllustratorIcon() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <rect width="100" height="100" rx="18" fill="#310000"/>
+      <text x="50" y="68" textAnchor="middle" fill="#FF9A00" fontFamily="Arial" fontWeight="900" fontSize="48">Ai</text>
+    </svg>
+  );
+}
+
+function NotionIcon() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <rect width="100" height="100" rx="18" fill="#FFFFFF"/>
+      <rect width="100" height="100" rx="18" fill="none" stroke="#000" strokeWidth="4"/>
+      <text x="50" y="68" textAnchor="middle" fill="#000000" fontFamily="Arial" fontWeight="900" fontSize="52">N</text>
+    </svg>
+  );
+}
+
+function StitchIcon() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <rect width="100" height="100" rx="18" fill="#4285F4"/>
+      <text x="50" y="62" textAnchor="middle" fill="white" fontFamily="Arial" fontWeight="900" fontSize="36">AI</text>
+      <text x="50" y="82" textAnchor="middle" fill="white" fontFamily="Arial" fontSize="14">Stitch</text>
+    </svg>
+  );
+}
+
+/* ── Tilt Card ── */
+function TiltCard({ children, color, className = "" }: { children: React.ReactNode; color: string; className?: string }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mx = useSpring(x, { stiffness: 200, damping: 20 });
+  const my = useSpring(y, { stiffness: 200, damping: 20 });
+  const rotateX = useTransform(my, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const rotateY = useTransform(mx, [-0.5, 0.5], ["-8deg", "8deg"]);
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        x.set((e.clientX - r.left) / r.width - 0.5);
+        y.set((e.clientY - r.top) / r.height - 0.5);
+      }}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      whileHover={{ y: -8, boxShadow: `8px 8px 0px ${color}`, borderColor: color, scale: 1.02 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className={`group relative bg-white/60 backdrop-blur-sm border-4 border-primary rounded-2xl shadow-[5px_5px_0px_var(--color-primary)] transition-colors duration-300 overflow-hidden cursor-pointer ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function Sparkle({ style, delay }: { style: React.CSSProperties; delay: number }) {
   return (
     <motion.div
       animate={{ scale: [0, 1, 0], opacity: [0, 1, 0], rotate: [0, 180] }}
-      transition={{ duration: 2.5, repeat: Infinity, delay, ease: "easeInOut" }}
+      transition={{ duration: 2.5, repeat: Infinity, delay }}
       className="absolute w-3 h-3 pointer-events-none z-0"
       style={style}
     >
@@ -21,547 +98,130 @@ function Sparkle({ style, delay }: { style: React.CSSProperties; delay: number }
   );
 }
 
-/* ════════════════════════════════════════════════════
-   TILT CARD WRAPPER — 3D perspective on hover
-   ════════════════════════════════════════════════════ */
-function TiltCard({
-  children,
-  color,
-  className = "",
-}: {
-  children: React.ReactNode;
-  color: string;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mx = useSpring(x, { stiffness: 260, damping: 20 });
-  const my = useSpring(y, { stiffness: 260, damping: 20 });
-  const rotateX = useTransform(my, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mx, [-0.5, 0.5], ["-8deg", "8deg"]);
-
-  const handleMove = (e: React.MouseEvent) => {
-    const rect = ref.current!.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 40, scale: 0.92 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ type: "spring", bounce: 0.35 }}
-      whileHover={{
-        y: -14,
-        boxShadow: `12px 12px 0px ${color}`,
-        borderColor: color,
-      }}
-      whileTap={{ scale: 0.96 }}
-      className={`group relative bg-white/50 backdrop-blur-sm border-4 border-primary rounded-2xl overflow-hidden cursor-pointer shadow-[6px_6px_0px_var(--color-primary)] transition-colors duration-300 ${className}`}
-    >
-      {/* Window Dots */}
-      <div className="absolute top-3 right-3 flex gap-1.5 z-20">
-        <div className="w-2.5 h-2.5 rounded-full border border-primary bg-[var(--color-accent-red)]" />
-        <div className="w-2.5 h-2.5 rounded-full border border-primary bg-[var(--color-accent-yellow)]" />
-        <div className="w-2.5 h-2.5 rounded-full border border-primary bg-[var(--color-accent-green)]" />
-      </div>
-
-      {/* Hover glow */}
-      <motion.div
-        className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[-1]"
-        style={{ boxShadow: `0 0 30px ${color}, 0 0 60px ${color}40` }}
-      />
-
-      {/* Pixel particle bursts on hover */}
-      {[...Array(3)].map((_, i) => (
-        <motion.div
-          key={`burst-${i}`}
-          className="absolute w-2 h-2 border border-primary rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-          style={{ backgroundColor: color, top: "50%", left: "50%" }}
-          animate={{
-            x: [0, (i % 2 === 0 ? 35 : -35)],
-            y: [0, i === 1 ? -30 : 20],
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1, 0],
-          }}
-          transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.25, ease: "easeOut" }}
-        />
-      ))}
-
-      {children}
-    </motion.div>
-  );
-}
-
-/* ════════════════════════════════════════════════════
-   FLOATING THEME ICONS — appear on hover
-   ════════════════════════════════════════════════════ */
-function FloatingIcons({ icons }: { icons: string[] }) {
-  return (
-    <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 overflow-hidden">
-      {icons.map((icon, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            y: [8, -16, 8],
-            x: [0, i % 2 === 0 ? 10 : -10, 0],
-            rotate: [0, i % 2 === 0 ? 12 : -12, 0],
-          }}
-          transition={{ duration: 3 + i * 0.4, repeat: Infinity, delay: i * 0.25, ease: "easeInOut" }}
-          className="absolute text-2xl"
-          style={{ top: `${15 + i * 20}%`, right: `${8 + i * 6}%` }}
-        >
-          {icon}
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-/* ════════════════════════════════════════════════════
-   TOOL DATA
-   ════════════════════════════════════════════════════ */
 const tools = [
   {
     name: "Figma",
-    tagline: "Collaborative Design",
+    tagline: "UI Design",
     color: "var(--color-accent-blue)",
-    emoji: "🎨",
-    description: "Wireframing, prototyping, and collaborative design systems — where ideas become interfaces.",
-    hoverIcons: ["🖼️", "📐", "🧩", "🖱️"],
-    miniItems: [
-      { label: "Auto Layout", icon: "⬡" },
-      { label: "Components", icon: "◆" },
-      { label: "Prototypes", icon: "▶" },
-    ],
-    // themed decorations rendered inside the card
-    theme: "figma" as const,
+    Icon: FigmaIcon,
+    description: "Wireframing, prototyping & design systems.",
+    miniItems: ["Auto Layout", "Components", "Prototypes"],
   },
   {
     name: "Photoshop",
-    tagline: "Creative Editing",
+    tagline: "Photo Editing",
     color: "var(--color-accent-red)",
-    emoji: "🖌️",
-    description: "Image manipulation, compositing, and creative retouching for pixel-perfect visuals.",
-    hoverIcons: ["🎭", "🖼️", "✨", "🔲"],
-    miniItems: [
-      { label: "Layers", icon: "◧" },
-      { label: "Brushes", icon: "⬡" },
-      { label: "Masks", icon: "◑" },
-    ],
-    theme: "photoshop" as const,
+    Icon: PhotoshopIcon,
+    description: "Image editing, compositing & pixel-perfect visuals.",
+    miniItems: ["Layers", "Brushes", "Masks"],
   },
   {
     name: "Illustrator",
-    tagline: "Vector Playground",
+    tagline: "Vector Art",
     color: "var(--color-accent-yellow)",
-    emoji: "✏️",
-    description: "Vector illustration, iconography, and scalable graphics that bring ideas to life at any size.",
-    hoverIcons: ["📏", "🔺", "⬟", "🔷"],
-    miniItems: [
-      { label: "Pen Tool", icon: "✒" },
-      { label: "Vectors", icon: "◇" },
-      { label: "Shapes", icon: "⬠" },
-    ],
-    theme: "illustrator" as const,
+    Icon: IllustratorIcon,
+    description: "Vector illustration & scalable graphics.",
+    miniItems: ["Pen Tool", "Vectors", "Shapes"],
   },
   {
     name: "Notion",
-    tagline: "Organized Creativity",
+    tagline: "Organization",
     color: "var(--color-accent-green)",
-    emoji: "📝",
-    description: "Research databases, project wikis, and creative documentation — my second brain.",
-    hoverIcons: ["📋", "✅", "📂", "🗂️"],
-    miniItems: [
-      { label: "Databases", icon: "▦" },
-      { label: "Wikis", icon: "📖" },
-      { label: "Tasks", icon: "☑" },
-    ],
-    theme: "notion" as const,
+    Icon: NotionIcon,
+    description: "Research, project wikis & documentation.",
+    miniItems: ["Databases", "Wikis", "Tasks"],
   },
   {
     name: "Stitch",
-    tagline: "AI Experimentation",
+    tagline: "AI Design",
     color: "var(--color-accent-blue)",
-    emoji: "🤖",
-    description: "AI-powered design generation, rapid experimentation, and futuristic creative workflows.",
-    hoverIcons: ["⚡", "🧠", "🔮", "💡"],
-    miniItems: [
-      { label: "AI Gen", icon: "✦" },
-      { label: "Nodes", icon: "◎" },
-      { label: "Iterate", icon: "↻" },
-    ],
-    theme: "stitch" as const,
+    Icon: StitchIcon,
+    description: "AI-powered design generation & workflows.",
+    miniItems: ["AI Gen", "Nodes", "Iterate"],
   },
 ];
 
-/* ════════════════════════════════════════════════════
-   THEMED DECORATION per card
-   ════════════════════════════════════════════════════ */
-function ThemedDecor({ theme, color }: { theme: string; color: string }) {
-  if (theme === "figma") {
-    return (
-      <>
-        {/* floating wireframe blocks */}
-        <motion.div
-          animate={{ y: [0, -6, 0], x: [0, 4, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute top-8 left-4 w-10 h-6 border-2 border-dashed border-primary/30 rounded-md"
-        />
-        <motion.div
-          animate={{ y: [0, 4, 0], x: [0, -3, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
-          className="absolute top-20 left-6 w-6 h-6 border-2 border-dashed border-primary/20 rounded"
-        />
-        {/* cursor trail */}
-        <motion.div
-          animate={{ x: [0, 30, 60, 30, 0], y: [0, -10, 5, 15, 0], opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-12 left-10 w-4 h-5 pointer-events-none z-0"
-        >
-          <svg viewBox="0 0 16 20" fill={color} className="w-full h-full">
-            <path d="M0,0 L0,16 L4,12 L8,18 L10,17 L6,11 L12,10 Z" stroke="var(--color-primary)" strokeWidth="1" />
-          </svg>
-        </motion.div>
-        {/* sticky note */}
-        <motion.div
-          animate={{ rotate: [-3, 3, -3] }}
-          transition={{ duration: 5, repeat: Infinity }}
-          className="absolute bottom-6 right-6 w-10 h-10 bg-[var(--color-accent-yellow)]/40 border border-primary/30 rounded-sm rotate-6 flex items-center justify-center text-[8px] font-bold text-primary/50"
-        >
-          TODO
-        </motion.div>
-      </>
-    );
-  }
-  if (theme === "photoshop") {
-    return (
-      <>
-        {/* floating layers */}
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ y: [0, -4 + i * 2, 0], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 3 + i, repeat: Infinity, delay: i * 0.4 }}
-            className="absolute border border-primary/20 rounded"
-            style={{
-              width: 28 - i * 4,
-              height: 18 - i * 2,
-              top: 10 + i * 14,
-              left: 6 + i * 8,
-              backgroundColor: `color-mix(in srgb, ${color} ${20 + i * 10}%, transparent)`,
-            }}
-          />
-        ))}
-        {/* brush stroke */}
-        <motion.div
-          animate={{ scaleX: [0, 1, 1, 0], originX: 0 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-10 left-6 w-16 h-1 rounded-full"
-          style={{ backgroundColor: color }}
-        />
-        {/* selection box */}
-        <motion.div
-          animate={{ opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute top-14 right-6 w-8 h-8 border-2 border-dashed rounded"
-          style={{ borderColor: color }}
-        />
-      </>
-    );
-  }
-  if (theme === "illustrator") {
-    return (
-      <>
-        {/* bezier curve */}
-        <svg className="absolute top-6 left-4 w-20 h-16 pointer-events-none" viewBox="0 0 80 60" fill="none">
-          <motion.path
-            d="M5,50 C20,5 60,5 75,50"
-            stroke={color}
-            strokeWidth="2"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: [0, 1, 1, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <circle cx="5" cy="50" r="3" fill="var(--color-primary)" opacity={0.4} />
-          <circle cx="75" cy="50" r="3" fill="var(--color-primary)" opacity={0.4} />
-        </svg>
-        {/* floating shapes */}
-        <motion.div
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-8 right-8 w-6 h-6 border-2 rounded-sm opacity-30"
-          style={{ borderColor: color }}
-        />
-        <motion.div
-          animate={{ y: [0, -5, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="absolute bottom-14 left-8 w-0 h-0 opacity-30"
-          style={{
-            borderLeft: "6px solid transparent",
-            borderRight: "6px solid transparent",
-            borderBottom: `10px solid ${color}`,
-          }}
-        />
-      </>
-    );
-  }
-  if (theme === "notion") {
-    return (
-      <>
-        {/* checklist */}
-        <div className="absolute top-8 left-4 flex flex-col gap-1.5">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              animate={i < 2 ? { scale: [1, 1.15, 1] } : {}}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
-              className="flex items-center gap-1"
-            >
-              <div
-                className={`w-3 h-3 border border-primary/30 rounded-sm ${
-                  i < 2 ? "bg-[var(--color-accent-green)]/40" : ""
-                }`}
-              />
-              <div className="w-8 h-1 bg-primary/15 rounded-full" />
-            </motion.div>
-          ))}
-        </div>
-        {/* floating note */}
-        <motion.div
-          animate={{ y: [0, -4, 0], rotate: [-2, 2, -2] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute bottom-8 right-6 w-12 h-8 bg-surface border border-primary/20 rounded-sm p-1"
-        >
-          <div className="w-full h-1 bg-primary/15 rounded-full mb-1" />
-          <div className="w-3/4 h-1 bg-primary/10 rounded-full" />
-        </motion.div>
-      </>
-    );
-  }
-  // stitch
-  return (
-    <>
-      {/* AI node network */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" fill="none">
-        <motion.line
-          x1="20" y1="25" x2="50" y2="50"
-          stroke={color}
-          strokeWidth="1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        />
-        <motion.line
-          x1="80" y1="30" x2="50" y2="50"
-          stroke={color}
-          strokeWidth="1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-        />
-        <motion.line
-          x1="50" y1="50" x2="35" y2="80"
-          stroke={color}
-          strokeWidth="1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-        />
-        <motion.circle cx="20" cy="25" r="3" fill={color} animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-        <motion.circle cx="80" cy="30" r="3" fill={color} animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.4 }} />
-        <motion.circle cx="50" cy="50" r="4" fill={color} animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 2.5, repeat: Infinity }} />
-        <motion.circle cx="35" cy="80" r="3" fill={color} animate={{ scale: [1, 1.4, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.8 }} />
-      </svg>
-      {/* glowing center pulse */}
-      <motion.div
-        animate={{ scale: [1, 1.8, 1], opacity: [0.1, 0.3, 0.1] }}
-        transition={{ duration: 3, repeat: Infinity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full pointer-events-none"
-        style={{ backgroundColor: color }}
-      />
-    </>
-  );
-}
-
-/* ════════════════════════════════════════════════════
-   MAIN SECTION
-   ════════════════════════════════════════════════════ */
 export default function ToolboxSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [sparkles, setSparkles] = useState<{ top: string; left: string; delay: number }[]>([]);
 
   useEffect(() => {
     requestAnimationFrame(() => {
-      setSparkles(
-        [...Array(10)].map(() => ({
-          top: `${8 + Math.random() * 84}%`,
-          left: `${4 + Math.random() * 92}%`,
-          delay: Math.random() * 4,
-        }))
-      );
+      setSparkles([...Array(8)].map(() => ({
+        top: `${8 + Math.random() * 84}%`,
+        left: `${4 + Math.random() * 92}%`,
+        delay: Math.random() * 4,
+      })));
     });
   }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-surface relative overflow-hidden border-t-4 border-primary"
-    >
-      {/* ── sparkles ── */}
+    <section ref={containerRef} className="py-20 sm:py-28 px-4 sm:px-6 bg-surface relative overflow-hidden">
       {sparkles.map((s, i) => (
-        <Sparkle key={`sp-${i}`} style={{ top: s.top, left: s.left }} delay={s.delay} />
+        <Sparkle key={i} style={{ top: s.top, left: s.left }} delay={s.delay} />
       ))}
 
-      {/* ── ambient particles ── */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={`p-${i}`}
-            animate={{
-              y: [0, -30, 0],
-              x: [0, i % 2 === 0 ? 12 : -12, 0],
-              opacity: [0.1, 0.35, 0.1],
-            }}
-            transition={{ duration: 7 + i, repeat: Infinity, delay: i * 0.7 }}
-            className="absolute w-1.5 h-1.5 bg-primary/15 rounded-full"
-            style={{ top: `${12 + i * 10}%`, left: `${8 + i * 11}%` }}
-          />
-        ))}
-      </div>
-
-      {/* ── floating draggable stars — hidden on mobile ── */}
-      <motion.div
-        drag
-        dragConstraints={containerRef}
-        whileDrag={{ scale: 1.15, cursor: "grabbing" }}
-        whileHover={{ scale: 1.4, rotate: 90 }}
-        animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 3, repeat: Infinity }}
-        className="absolute top-20 right-[12%] w-6 h-6 bg-[var(--color-accent-yellow)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10 hidden sm:block"
-      />
-      <motion.div
-        drag
-        dragConstraints={containerRef}
-        whileDrag={{ scale: 1.15, cursor: "grabbing" }}
-        whileHover={{ scale: 1.4, rotate: -90 }}
-        animate={{ y: [0, 12, 0], opacity: [0.4, 0.9, 0.4] }}
-        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-        className="absolute bottom-28 left-[8%] w-7 h-7 bg-[var(--color-accent-red)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10 hidden sm:block"
-      />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-10 sm:mb-14"
         >
-          <motion.h2 className="font-pixel text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary mb-4 drop-shadow-[4px_4px_0px_#E0D8C8]">
+          <motion.h2 className="font-pixel text-3xl sm:text-4xl md:text-5xl text-primary mb-3 drop-shadow-[4px_4px_0px_#E0D8C8]">
             CREATIVE TOOLBOX
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="text-secondary font-semibold text-sm sm:text-lg max-w-lg mx-auto"
-          >
+          <p className="text-secondary font-semibold text-sm sm:text-base max-w-lg mx-auto">
             The digital tools behind my ideas, experiments, and creative workflows.
-          </motion.p>
-
-          {/* decorative tool icons */}
-          <div className="flex justify-center gap-3 mt-6">
-            {["🎨", "🖌️", "✏️", "📝", "🤖"].map((e, i) => (
-              <motion.div
-                key={i}
-                animate={{ y: [0, -5, 0], rotate: [0, i % 2 === 0 ? 8 : -8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.15 }}
-                className="w-9 h-9 flex items-center justify-center border-2 border-primary rounded-lg bg-white/60 shadow-[2px_2px_0px_var(--color-primary)] text-lg"
-              >
-                {e}
-              </motion.div>
-            ))}
-          </div>
+          </p>
         </motion.div>
 
-        {/* ─── Tool Cards Grid ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
+        {/* Single-row 5-card grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {tools.map((tool, index) => (
-            <TiltCard
-              key={tool.name}
-              color={tool.color}
-              className={`p-4 sm:p-6 min-h-[260px] sm:min-h-[320px] flex flex-col justify-end ${
-                /* last 2 cards: center in a 2-col subgrid on lg */
-                index === 3 ? "lg:col-start-1 lg:justify-self-end lg:ml-auto" : ""
-              }${index === 4 ? "lg:col-start-2 lg:col-end-3" : ""}`}
-            >
-              {/* Themed background decorations */}
-              <ThemedDecor theme={tool.theme} color={tool.color} />
-
-              {/* Floating hover icons */}
-              <FloatingIcons icons={tool.hoverIcons} />
-
+            <TiltCard key={tool.name} color={tool.color} className="p-4 sm:p-5">
               {/* Soft color wash on hover */}
               <motion.div
-                animate={{ opacity: [0.03, 0.1, 0.03] }}
+                animate={{ opacity: [0.03, 0.08, 0.03] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="absolute inset-0 mix-blend-overlay rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{ backgroundColor: tool.color }}
               />
 
-              {/* Card Content */}
-              <div className="relative z-10 mt-auto">
-                {/* Icon + Title */}
-                <div className="flex items-center gap-3 mb-3">
-                  <motion.div
-                    animate={{ y: [0, -3, 0], rotate: [0, 4, -4, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-12 h-12 flex items-center justify-center border-4 border-primary rounded-xl text-2xl shadow-[3px_3px_0px_var(--color-primary)]"
-                    style={{ backgroundColor: tool.color }}
-                  >
-                    {tool.emoji}
-                  </motion.div>
-                  <div>
-                    <h3 className="font-pixel text-xl text-primary leading-tight">{tool.name}</h3>
-                    <span className="text-xs font-bold text-secondary">{tool.tagline}</span>
-                  </div>
-                </div>
+              <div className="relative z-10 flex flex-col h-full">
+                {/* Icon */}
+                <motion.div
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ duration: 2.5 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-10 h-10 sm:w-12 sm:h-12 mb-3 flex-shrink-0"
+                >
+                  <tool.Icon />
+                </motion.div>
+
+                {/* Name & tagline */}
+                <h3 className="font-pixel text-sm sm:text-base text-primary leading-tight mb-0.5">{tool.name}</h3>
+                <span className="text-[10px] sm:text-xs font-bold text-secondary mb-2 sm:mb-3">{tool.tagline}</span>
 
                 {/* Description */}
-                <p className="text-secondary font-semibold text-sm leading-relaxed mb-4">
-                  {tool.description}
-                </p>
+                <p className="text-secondary font-semibold text-[10px] sm:text-xs leading-relaxed mb-2 sm:mb-3 hidden sm:block">{tool.description}</p>
 
-                {/* Mini feature pills */}
-                <div className="flex flex-wrap gap-2">
+                {/* Mini pills */}
+                <div className="flex flex-col gap-1 mt-auto">
                   {tool.miniItems.map((item, i) => (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, y: 6 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 + i * 0.1 }}
-                      whileHover={{ y: -3, scale: 1.08, rotate: i % 2 === 0 ? 2 : -2 }}
-                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold border-2 border-primary rounded-lg shadow-[2px_2px_0px_var(--color-primary)] bg-surface cursor-pointer"
+                      whileHover={{ x: 3, scale: 1.04 }}
+                      className="px-2 py-0.5 text-[9px] sm:text-[10px] font-bold border border-primary rounded-md bg-white/70 w-fit"
                     >
-                      <span className="opacity-60">{item.icon}</span> {item.label}
+                      {item}
                     </motion.div>
                   ))}
                 </div>
               </div>
+
+              {/* Bottom accent bar */}
+              <div className="absolute bottom-0 left-0 w-full h-1 rounded-b-2xl" style={{ backgroundColor: tool.color }} />
             </TiltCard>
           ))}
         </div>
