@@ -28,7 +28,7 @@ export default function CaseStudies() {
   ];
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-surface relative z-10 border-t-4 border-primary">
+    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-surface relative z-10">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
