@@ -15,13 +15,13 @@ const tools = [
 export default function ToolboxSection() {
   return (
     <section id="toolbox" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-background relative overflow-hidden">
-      <div className="max-w-6xl mx-auto text-center relative z-10">
+      <div className="w-full max-w-6xl mx-auto text-center relative z-10">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-8 sm:mb-10">
           <motion.h2 className="font-pixel text-fluid-h2 text-primary mb-2">CREATIVE TOOLBOX 💻</motion.h2>
           <p className="text-secondary font-semibold text-[10px] sm:text-xs max-w-lg mx-auto">Instruments I use to bring digital experiences to life.</p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 w-full">
           {tools.map((tool, index) => (
             <motion.div
               key={tool.name}

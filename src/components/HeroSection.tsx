@@ -52,7 +52,7 @@ function TiltButton({
   const buttonContent = (
     <motion.div
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 lg:py-4.5 font-bold font-pixel text-[10px] sm:text-xs md:text-sm lg:text-base border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_var(--color-pixel-dark)] sm:shadow-[4px_4px_0px_var(--color-pixel-dark)] lg:shadow-[5px_5px_0px_var(--color-pixel-dark)] transition-all ${
+      className={`relative px-3 sm:px-6 lg:px-8 py-2 sm:py-3.5 lg:py-4.5 font-bold font-pixel text-[9px] sm:text-xs md:text-sm lg:text-base border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_var(--color-pixel-dark)] sm:shadow-[4px_4px_0px_var(--color-pixel-dark)] lg:shadow-[5px_5px_0px_var(--color-pixel-dark)] transition-all ${
         primary ? "bg-[var(--color-accent-blue)] text-primary" : "bg-surface text-primary"
       } ${className}`}
     >
@@ -96,9 +96,9 @@ function FloatingNavbar() {
       animate={{ opacity: 1, y: 0 }}
       className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none px-4"
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-center relative">
-        <nav className="flex items-center justify-between px-3 py-1.5 bg-surface/90 backdrop-blur-md border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl shadow-[4px_4px_0px_var(--color-pixel-dark)] pointer-events-auto">
-          <div className="hidden sm:flex items-center gap-0.5 md:gap-1">
+      <div className="w-full max-w-6xl mx-auto flex items-center justify-center relative">
+        <nav className="flex items-center justify-between px-3 py-1.5 bg-surface/90 backdrop-blur-md border-2 md:border-3 border-primary rounded-xl md:rounded-2xl shadow-[4px_4px_0px_var(--color-pixel-dark)] pointer-events-auto">
+          <div className="hidden lg:flex items-center gap-0.5 md:gap-1">
             {navItems.map((item) => (
               <motion.a
                 key={item}
@@ -110,8 +110,8 @@ function FloatingNavbar() {
               </motion.a>
             ))}
           </div>
-          <span className="sm:hidden font-pixel text-[10px] font-bold text-primary px-2">SOUDAS</span>
-          <button className="sm:hidden p-1.5" onClick={() => setMenuOpen((v) => !v)}>
+          <span className="lg:hidden font-pixel text-[10px] font-bold text-primary px-2">SOUDAS</span>
+          <button className="lg:hidden p-1.5" onClick={() => setMenuOpen((v) => !v)}>
             <div className="flex flex-col gap-1">
               <span className={`block w-4 h-0.5 bg-primary transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
               <span className={`block w-4 h-0.5 bg-primary transition-all ${menuOpen ? "opacity-0" : ""}`} />
@@ -120,7 +120,7 @@ function FloatingNavbar() {
           </button>
         </nav>
 
-        <div className="hidden sm:block absolute right-0 pointer-events-auto">
+        <div className="hidden lg:block absolute right-0 pointer-events-auto">
           <motion.a
             href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
             target="_blank"
@@ -137,13 +137,23 @@ function FloatingNavbar() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="absolute top-14 left-0 right-0 bg-surface border-3 border-primary rounded-xl p-2 flex flex-col gap-1 shadow-xl pointer-events-auto sm:hidden"
+              className="absolute top-14 left-0 right-0 bg-surface border-3 border-primary rounded-xl p-2 flex flex-col gap-1 shadow-xl pointer-events-auto lg:hidden"
             >
               {navItems.map((item) => (
                 <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="px-4 py-2 text-xs font-bold text-primary rounded-lg hover:bg-black/5">
                   {item}
                 </a>
               ))}
+              <div className="border-t-2 border-primary/10 mt-1 pt-1">
+                <a 
+                  href="/Soudas_Sur_UI_UX_Designer_Resume.pdf" 
+                  target="_blank" 
+                  className="px-4 py-2 text-xs font-bold text-primary rounded-lg bg-[var(--color-accent-yellow)]/20 flex justify-between items-center"
+                >
+                  View Resume 📄
+                  <span className="text-[10px]">→</span>
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -269,7 +279,7 @@ export default function HeroSection() {
     <section
       id="home"
       ref={containerRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background px-4 py-20"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-x-hidden bg-background px-4 py-20"
     >
       <FloatingNavbar />
 
@@ -279,9 +289,9 @@ export default function HeroSection() {
         
         {/* Floating cards repositioned to stay away from center */}
         <DraggableUI 
-          className="top-[15%] left-[4%] xl:left-[8%] hidden md:block" 
+          className="top-[15%] left-[2%] xl:left-[8%] hidden md:block" 
           constraintsRef={containerRef}
-          scale={isLaptop ? 0.85 : 1}
+          scale={isLaptop ? 0.8 : 1}
         >
           <MiniWindow title="case_study_v1.fig" colorClass="bg-[var(--color-accent-blue)]/20">
             <div className="w-full h-12 bg-primary/5 rounded flex items-center justify-center text-[10px] opacity-20">FIGMA</div>
@@ -289,9 +299,9 @@ export default function HeroSection() {
         </DraggableUI>
 
         <DraggableUI 
-          className="top-[12%] right-[4%] xl:right-[8%] hidden md:block" 
+          className="top-[12%] right-[2%] xl:right-[8%] hidden md:block" 
           constraintsRef={containerRef}
-          scale={isLaptop ? 0.85 : 1}
+          scale={isLaptop ? 0.8 : 1}
         >
           <MiniWindow title="prototype_v2.fig" colorClass="bg-[var(--color-accent-yellow)]/20">
             <div className="w-full h-10 bg-primary/5 rounded" />
@@ -299,17 +309,17 @@ export default function HeroSection() {
         </DraggableUI>
 
         <DraggableUI 
-          className="bottom-[18%] left-[5%] xl:left-[10%] hidden lg:block" 
+          className="bottom-[18%] left-[2%] xl:left-[10%] hidden xl:block" 
           constraintsRef={containerRef}
-          scale={isLaptop ? 0.8 : 1}
+          scale={isLaptop ? 0.75 : 0.9}
         >
           <WireframeCard />
         </DraggableUI>
 
         <DraggableUI 
-          className="bottom-[15%] right-[5%] xl:right-[12%] hidden sm:block" 
+          className="bottom-[15%] right-[2%] xl:right-[12%] hidden lg:block" 
           constraintsRef={containerRef}
-          scale={isLaptop ? 0.8 : 1}
+          scale={isLaptop ? 0.75 : 0.9}
         >
           <PixelMascot />
         </DraggableUI>
@@ -336,14 +346,8 @@ export default function HeroSection() {
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto pointer-events-none">
         
         {/* Title with fluid responsive clamp */}
-        <div className="mb-6 lg:mb-8 pointer-events-auto">
-          <h1 
-            className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05]"
-            style={{ 
-              fontSize: "clamp(2.5rem, 6vw + 1.5vh, 6.5rem)",
-              textShadow: "2.5px 2.5px 0px var(--color-accent-blue)"
-            }}
-          >
+        <div className="mb-6 lg:mb-8 pointer-events-auto w-full max-w-[100vw] overflow-hidden px-2">
+          <h1 className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] text-fluid-h1 transition-all duration-300">
             {titleText.split("").map((letter, i) => (
               <motion.span
                 key={i}
@@ -352,7 +356,10 @@ export default function HeroSection() {
                 transition={{ delay: 0.3 + i * 0.05, type: "spring", stiffness: 200 }}
                 whileHover={{ y: -8, color: "var(--color-accent-yellow)" }}
                 className="inline-block"
-                style={{ whiteSpace: "pre" }}
+                style={{ 
+                  whiteSpace: letter === " " ? "pre" : "normal",
+                  textShadow: "2px 2px 0px var(--color-accent-blue)"
+                }}
               >
                 {letter}
               </motion.span>
@@ -371,8 +378,8 @@ export default function HeroSection() {
           Designing thoughtful digital experiences through creativity, storytelling, and playful interactions.
         </motion.p>
 
-        {/* Identity Tags - Fixed responsiveness */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 lg:mb-14 pointer-events-auto px-4">
+        {/* Identity Tags - Hardened responsiveness */}
+        <div className="flex flex-row flex-wrap justify-center gap-2 md:gap-3 mb-10 lg:mb-14 pointer-events-auto w-full max-w-[100vw] px-6">
           {tags.map((tag, i) => (
             <motion.div
               key={tag.label}
@@ -380,7 +387,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1 + i * 0.08 }}
               whileHover={{ y: -2, scale: 1.05 }}
-              className="px-3 sm:px-4 py-1.5 md:py-2 text-[9px] md:text-xs font-bold border-2 border-primary rounded-full bg-white/80 backdrop-blur-sm shadow-[3px_3px_0px_var(--color-primary)] cursor-pointer"
+              className="px-3 sm:px-4 py-1.5 md:py-2 text-[8px] sm:text-[9px] md:text-xs font-bold border-2 border-primary rounded-full bg-white/80 backdrop-blur-sm shadow-[2px_2px_0px_var(--color-primary)] cursor-pointer"
               style={{ borderColor: tag.color }}
             >
               {tag.label}
@@ -395,10 +402,10 @@ export default function HeroSection() {
           transition={{ delay: 1.5 }}
           className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 pointer-events-auto w-full sm:w-auto px-8 sm:px-0"
         >
-          <TiltButton primary href="#work" className="w-full sm:w-auto">
+          <TiltButton primary href="#work" className="w-full sm:w-auto max-w-full">
             Explore Projects 🚀
           </TiltButton>
-          <TiltButton href="#contact" className="w-full sm:w-auto">
+          <TiltButton href="#contact" className="w-full sm:w-auto max-w-full">
             Connect 🤝
           </TiltButton>
         </motion.div>

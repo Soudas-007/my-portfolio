@@ -15,7 +15,7 @@ export default function AboutSection() {
 
   return (
     <section id="about" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-background relative overflow-hidden">
-      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center z-10 relative">
+      <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center z-10 relative">
         {/* Left: Desk Visual - Smaller scale */}
         <div className="w-full lg:w-1/2 relative h-[200px] sm:h-[300px] flex items-center justify-center">
           <motion.div

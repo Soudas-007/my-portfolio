@@ -11,7 +11,7 @@ const experiences = [
 export default function ExperienceSection() {
   return (
     <section id="experience" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-[#FDFBF7] relative overflow-hidden">
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="w-full max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-8 sm:mb-12">
           <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-2">JOURNEY SO FAR</motion.h2>
           <p className="text-secondary font-semibold text-[10px] sm:text-xs">Creative milestones and collaborations.</p>
@@ -21,7 +21,7 @@ export default function ExperienceSection() {
           <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-primary/10 hidden sm:block" />
           {experiences.map((exp, i) => (
             <motion.div key={exp.id} initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="relative bg-surface border-2 sm:border-3 border-primary rounded-xl p-4 sm:p-5 flex flex-col md:flex-row gap-4 shadow-[4px_4px_0px_var(--color-primary)] hover:translate-y-[-2px] transition-transform"
+              className="relative w-full bg-surface border-2 sm:border-3 border-primary rounded-xl p-4 sm:p-5 flex flex-col md:flex-row gap-4 shadow-[4px_4px_0px_var(--color-primary)] hover:translate-y-[-2px] transition-transform"
             >
               <div className="w-10 h-10 shrink-0 bg-white border-2 border-primary rounded-lg flex items-center justify-center text-xl shadow-[2px_2px_0px_var(--color-primary)]">{exp.icon}</div>
               <div className="flex-1">
