@@ -94,37 +94,6 @@ function EmailModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ═══ CONTACT CARD ═══ */
-function ContactCard({ icon, label, value, href, color }: {
-  icon: string; label: string; value: string; href: string; color: string;
-}) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -8, boxShadow: `6px 6px 0px ${color}`, borderColor: color, scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      animate={{ y: [0, -4, 0] }}
-      transition={{ y: { duration: 3 + Math.random() * 2, repeat: Infinity, ease: "easeInOut" } }}
-      className="group flex flex-col items-center gap-2 px-4 py-4 bg-white/10 backdrop-blur-sm border-3 border-white/30 rounded-2xl shadow-[4px_4px_0px_rgba(255,255,255,0.2)] cursor-pointer transition-all duration-300 min-w-[120px]"
-    >
-      <motion.span
-        animate={{ rotate: [0, 5, -5, 0] }}
-        transition={{ duration: 3, repeat: Infinity }}
-        className="text-2xl"
-      >{icon}</motion.span>
-      <div className="text-center">
-        <div className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-0.5">{label}</div>
-        <div className="text-xs font-bold text-white truncate max-w-[120px]">{value}</div>
-      </div>
-    </motion.a>
-  );
-}
-
 /* ═══ PIXEL MASCOT WAVE ═══ */
 function MascotWave() {
   const [blinking, setBlinking] = useState(false);
@@ -200,20 +169,14 @@ export default function FooterSection() {
     });
   }, []);
 
-  const contactCards = [
-    { icon: "📧", label: "Email", value: "sursoudas@gmail.com", href: "mailto:sursoudas@gmail.com", color: "var(--color-accent-blue)" },
-    { icon: "💼", label: "LinkedIn", value: "soudas-sur", href: "https://www.linkedin.com/in/soudas-sur-98476b399/", color: "var(--color-accent-blue)" },
-    { icon: "🎨", label: "Behance", value: "soudassur_007", href: "https://www.behance.net/soudassur_007", color: "var(--color-accent-yellow)" },
-    { icon: "📍", label: "Location", value: "Kolkata, WB", href: "#", color: "var(--color-accent-green)" },
-  ];
-
   return (
     <>
       <AnimatePresence>{modalOpen && <EmailModal onClose={() => setModalOpen(false)} />}</AnimatePresence>
 
       <footer
+        id="contact"
         ref={containerRef}
-        className="relative bg-[var(--color-primary)] overflow-hidden min-h-screen flex flex-col items-center justify-center py-24 sm:py-32 px-4 sm:px-6"
+        className="relative bg-[var(--color-primary)] overflow-hidden min-h-[90vh] flex flex-col items-center justify-center py-24 sm:py-32 px-4 sm:px-6"
       >
         {/* ── Night Sky ── */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -264,7 +227,7 @@ export default function FooterSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-6"
+            className="mb-8"
           >
             <motion.h2
               animate={{ y: [0, -5, 0] }}
@@ -286,26 +249,23 @@ export default function FooterSection() {
             </motion.p>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* 3 CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-14"
+            className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center mb-12 sm:mb-16"
           >
             {/* Send Message */}
             <motion.button
               whileHover={{ y: -5, scale: 1.04, boxShadow: "0 0 30px var(--color-accent-yellow)" }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setModalOpen(true)}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-[var(--color-accent-yellow)] text-primary font-pixel text-base sm:text-lg border-4 border-white rounded-2xl shadow-[5px_5px_0px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 group relative overflow-hidden"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-[var(--color-accent-yellow)] text-primary font-pixel text-sm sm:text-base border-4 border-white rounded-2xl shadow-[5px_5px_0px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 group relative overflow-hidden"
             >
               <span>Send a Message</span>
-              <motion.span
-                animate={{ x: [0, 3, 0], rotate: [0, 15, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >✈️</motion.span>
+              <motion.span animate={{ x: [0, 3, 0], rotate: [0, 15, 0] }} transition={{ duration: 2, repeat: Infinity }}>✈️</motion.span>
             </motion.button>
 
             {/* LinkedIn */}
@@ -315,34 +275,33 @@ export default function FooterSection() {
               rel="noopener noreferrer"
               whileHover={{ y: -5, scale: 1.04, boxShadow: "0 0 25px var(--color-accent-blue)" }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-[var(--color-accent-blue)] text-primary font-pixel text-base sm:text-lg border-4 border-white rounded-2xl shadow-[5px_5px_0px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-[var(--color-accent-blue)] text-primary font-pixel text-sm sm:text-base border-4 border-white rounded-2xl shadow-[5px_5px_0px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3"
             >
               <span>Connect on LinkedIn</span>
               <span>💼</span>
             </motion.a>
+
+            {/* Behance */}
+            <motion.a
+              href="https://www.behance.net/soudassur_007"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -5, scale: 1.04, boxShadow: "0 0 25px var(--color-accent-red)" }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-[var(--color-accent-red)] text-primary font-pixel text-sm sm:text-base border-4 border-white rounded-2xl shadow-[5px_5px_0px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3"
+            >
+              <span>Behance Profile</span>
+              <span>🎨</span>
+            </motion.a>
           </motion.div>
 
-          {/* Contact Cards */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-14"
-          >
-            {contactCards.map((card, i) => (
-              <ContactCard key={i} {...card} />
-            ))}
-          </motion.div>
-
-          {/* Availability Widget */}
+          {/* Availability Widget (Cleaned up as requested) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
-            animate={{ y: [0, -5, 0] }}
-            className="inline-flex flex-col items-center gap-3 px-5 sm:px-7 py-4 bg-white/10 backdrop-blur-sm border-3 border-white/25 rounded-2xl shadow-[4px_4px_0px_rgba(255,255,255,0.15)] mb-10 sm:mb-14"
+            className="inline-flex flex-col items-center gap-3 px-5 sm:px-7 py-5 bg-white/10 backdrop-blur-sm border-3 border-white/25 rounded-2xl shadow-[4px_4px_0px_rgba(255,255,255,0.15)] mb-12"
           >
             <div className="flex items-center gap-2">
               <motion.div
@@ -358,42 +317,12 @@ export default function FooterSection() {
                 <motion.span
                   key={i}
                   whileHover={{ scale: 1.08, y: -2 }}
-                  className="text-[10px] sm:text-xs font-bold px-2.5 py-1 bg-white/15 border border-white/25 rounded-full text-white/90 cursor-default"
+                  className="text-[10px] sm:text-xs font-bold px-3 py-1.5 bg-white/15 border border-white/25 rounded-full text-white/90 cursor-default"
                 >
                   {item}
                 </motion.span>
               ))}
             </div>
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-            className="flex justify-center gap-4 mb-12 sm:mb-16"
-          >
-            {[
-              { label: "LinkedIn", emoji: "💼", href: "https://www.linkedin.com/in/soudas-sur-98476b399/" },
-              { label: "Behance", emoji: "🎨", href: "https://www.behance.net/soudassur_007" },
-              { label: "Email", emoji: "📧", href: "mailto:sursoudas@gmail.com" },
-            ].map((s, i) => (
-              <motion.a
-                key={i}
-                href={s.href}
-                target={s.href.startsWith("http") ? "_blank" : undefined}
-                rel="noopener noreferrer"
-                whileHover={{ y: -6, scale: 1.15, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
-                animate={{ y: [0, -4, 0] }}
-                transition={{ y: { duration: 2 + i * 0.5, repeat: Infinity } }}
-                className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center bg-white/15 border-2 border-white/30 rounded-xl text-xl shadow-[3px_3px_0px_rgba(255,255,255,0.15)] backdrop-blur-sm hover:bg-white/25 transition-colors"
-                title={s.label}
-              >
-                {s.emoji}
-              </motion.a>
-            ))}
           </motion.div>
 
           {/* Pixel Mascot Goodbye */}
