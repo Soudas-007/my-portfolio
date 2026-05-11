@@ -29,7 +29,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden">
+    <section id="about" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {particles.map((p, i) => (
