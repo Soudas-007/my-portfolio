@@ -16,7 +16,6 @@ export default function PixelCharacter() {
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
       
-      // Normalized values (-1 to 1)
       const nx = (e.clientX - centerX) / (window.innerWidth / 2);
       const ny = (e.clientY - centerY) / (window.innerHeight / 2);
       
@@ -24,6 +23,14 @@ export default function PixelCharacter() {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
+
+    // Random looking around
+    const lookInterval = setInterval(() => {
+      const isMoving = Math.random() > 0.5;
+      if (!isMoving) return;
+      setMousePos({ x: Math.random() * 0.4 - 0.2, y: Math.random() * 0.4 - 0.2 });
+    }, 3000);
+
     const blinkInterval = setInterval(() => {
       setIsWinking(true);
       setTimeout(() => setIsWinking(false), 150);
@@ -31,6 +38,7 @@ export default function PixelCharacter() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      clearInterval(lookInterval);
       clearInterval(blinkInterval);
     };
   }, []);
@@ -131,8 +139,12 @@ export default function PixelCharacter() {
               <motion.circle
                 cx="30" cy="79" r="6"
                 fill="#22D3EE"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                animate={{ 
+                  scale: [1, 2, 1], 
+                  opacity: [0.4, 0.9, 0.4],
+                  filter: ["blur(4px)", "blur(8px)", "blur(4px)"]
+                }}
+                transition={{ duration: 1.5, repeat: Infinity }}
               />
             </motion.g>
           </motion.g>
