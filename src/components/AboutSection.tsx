@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutSection() {
   const [particles, setParticles] = useState<{ top: string; left: string; delay: number; duration: number; xMove: number }[]>([]);
@@ -29,7 +30,6 @@ export default function AboutSection() {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden">
-      
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {particles.map((p, i) => (
@@ -44,33 +44,46 @@ export default function AboutSection() {
       </div>
 
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-center z-10 relative">
-        
-        {/* Left: Desk Visual */}
-        <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-[500px] flex items-center justify-center">
-          
+
+        {/* Left: Desk Visual with Designer Image in Monitor */}
+        <div className="w-full lg:w-1/2 relative h-[320px] sm:h-[420px] lg:h-[520px] flex items-center justify-center">
+
           {/* Main Monitor */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             whileHover={{ y: -5 }}
-            className="relative z-20 w-64 sm:w-80 h-44 sm:h-56 bg-surface border-4 border-primary rounded-xl shadow-[8px_8px_0px_var(--color-primary)] flex flex-col p-2 cursor-pointer group"
+            className="relative z-20 w-64 sm:w-80 md:w-96 h-48 sm:h-60 md:h-72 bg-surface border-4 border-primary rounded-xl shadow-[8px_8px_0px_var(--color-primary)] flex flex-col p-1.5 cursor-pointer group"
           >
+            {/* Screen bezel */}
             <div className="w-full h-full bg-[#1A1A1A] rounded-lg border-2 border-primary overflow-hidden relative">
-              <div className="absolute top-0 left-0 w-full h-4 bg-primary/20 flex gap-1 items-center px-2">
-                <div className="w-2 h-2 rounded-full bg-red-400" />
-                <div className="w-2 h-2 rounded-full bg-yellow-400" />
-                <div className="w-2 h-2 rounded-full bg-green-400" />
+              {/* Window bar */}
+              <div className="absolute top-0 left-0 w-full h-5 bg-[#2a2a2a] flex gap-1.5 items-center px-2 z-10">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                <span className="ml-2 text-[9px] text-white/40 font-mono">designer.exe</span>
               </div>
-              <motion.div
-                animate={{ opacity: [1, 1, 0, 1] }}
-                transition={{ duration: 4, repeat: Infinity, times: [0, 0.9, 0.95, 1] }}
-                className="mt-8 px-4 font-pixel text-[#4AF626] text-xs sm:text-sm"
-              >
-                {">"} Loading Resume...<br />
-                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity }}>_</motion.span>
-              </motion.div>
+              {/* Designer image fills the screen */}
+              <div className="absolute inset-0 mt-5 flex items-center justify-center bg-gradient-to-b from-[#1a1a2e] to-[#16213e]">
+                <Image
+                  src="/designer.png"
+                  alt="Pixel art designer"
+                  fill
+                  className="object-contain p-2 pixelated"
+                  priority
+                />
+              </div>
+              {/* Scanline overlay for CRT effect */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-10 z-20"
+                style={{
+                  backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)"
+                }}
+              />
             </div>
+            {/* Monitor stand */}
             <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-16 h-8 bg-surface border-x-4 border-primary z-0" />
             <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-32 h-4 bg-surface border-4 border-primary rounded-t-lg z-10 shadow-[4px_4px_0px_var(--color-primary)]" />
           </motion.div>
@@ -94,25 +107,25 @@ export default function AboutSection() {
           {/* Coffee Mug */}
           <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="absolute bottom-16 sm:bottom-20 right-6 sm:right-10 w-10 sm:w-12 h-12 sm:h-14 bg-[var(--color-accent-red)] border-4 border-primary rounded-b-lg rounded-t-sm z-30 shadow-[4px_4px_0px_var(--color-primary)] flex justify-end cursor-pointer"
+            className="absolute bottom-14 sm:bottom-20 right-4 sm:right-10 w-10 sm:w-12 h-12 sm:h-14 bg-[var(--color-accent-red)] border-4 border-primary rounded-b-lg rounded-t-sm z-30 shadow-[4px_4px_0px_var(--color-primary)] flex justify-end cursor-pointer"
           >
             <div className="w-3 sm:w-4 h-5 sm:h-6 border-4 border-l-0 border-primary rounded-r-lg mt-2 -mr-3" />
             <motion.div
               animate={{ y: [-5, -20], x: [0, 5, -5, 0], opacity: [0, 1, 0] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-8 left-2 text-gray-400 text-lg"
+              className="absolute -top-8 left-2 text-lg"
             >♨️</motion.div>
           </motion.div>
 
           {/* Sticky Notes */}
           <motion.div
-            whileHover={{ scale: 1.1, rotateX: 180 }}
+            whileHover={{ scale: 1.1 }}
             className="absolute top-16 sm:top-24 right-12 sm:right-20 w-14 sm:w-16 h-14 sm:h-16 bg-[var(--color-accent-green)] border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] rotate-12 flex items-center justify-center p-2 text-xs font-bold text-center cursor-pointer"
           >
             <div>Call Mom</div>
           </motion.div>
           <motion.div
-            whileHover={{ scale: 1.1, rotateX: 180 }}
+            whileHover={{ scale: 1.1 }}
             className="absolute top-32 sm:top-40 right-4 sm:right-10 w-14 sm:w-16 h-14 sm:h-16 bg-[var(--color-accent-yellow)] border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] -rotate-6 flex items-center justify-center p-2 text-xs font-bold text-center cursor-pointer"
           >
             <div>Review PR</div>
@@ -149,14 +162,9 @@ export default function AboutSection() {
                 whileHover={{ scale: 1.1, y: -5, boxShadow: `0px 0px 15px ${skill.color}, 4px 4px 0px var(--color-primary)` }}
                 animate={{ y: [0, -3, 0] }}
                 transition={{ delay: index * 0.1, y: { duration: 2 + index * 0.3, repeat: Infinity, repeatType: "mirror" } }}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border-2 border-primary rounded-full font-bold text-primary text-sm shadow-[4px_4px_0px_var(--color-primary)] cursor-pointer relative group"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border-2 border-primary rounded-full font-bold text-primary text-sm shadow-[4px_4px_0px_var(--color-primary)] cursor-pointer relative"
               >
                 {skill.name}
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 1.5, opacity: 1 }}
-                  className="absolute -top-2 -right-2 w-4 h-4 bg-[var(--color-accent-yellow)] rounded-full border border-primary z-[-1] transition-transform duration-200"
-                />
               </motion.div>
             ))}
           </div>
