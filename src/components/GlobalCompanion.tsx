@@ -105,14 +105,14 @@ export default function GlobalCompanion() {
   const config = { ...baseConfig, ...override };
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-5 pointer-events-none overflow-hidden">
       <AnimatePresence>
         {hasEntered && (
           <motion.div
             key="companion"
             initial={{ opacity: 0, scale: 0.2, x: isMobile ? "50%" : "90%", y: "100%" }}
             animate={{
-              opacity: 0.8, // Slightly more subtle as it's in background
+              opacity: 1, // Full visibility
               scale: config.scale,
               x: config.x,
               y: config.y,
@@ -125,7 +125,7 @@ export default function GlobalCompanion() {
               damping: 20,
               mass: 1.5,
             }}
-            className="absolute pointer-events-none" // Ensure it never blocks interactions
+            className="absolute pointer-events-none" 
             style={{ width: "fit-content", height: "fit-content" }}
           >
             <div className="relative group flex flex-col items-center">
@@ -138,12 +138,12 @@ export default function GlobalCompanion() {
                     initial={{ opacity: 0, y: 10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                    className="absolute -top-16 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white/90 backdrop-blur-sm border-2 border-primary px-4 py-2 rounded-xl shadow-[4px_4px_0px_var(--color-primary)] z-10"
+                    className="absolute -top-16 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white border-2 border-primary px-4 py-2 rounded-xl shadow-[4px_4px_0px_var(--color-primary)] z-10"
                   >
                     <p className="text-[10px] font-bold font-pixel text-primary uppercase tracking-tight">
                       {config.speech}
                     </p>
-                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/90 border-r-2 border-b-2 border-primary rotate-45" />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-primary rotate-45" />
                   </motion.div>
                 )}
               </AnimatePresence>

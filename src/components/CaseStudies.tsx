@@ -78,7 +78,8 @@ function ProjectCard({ project, index }: { project: typeof projects[0], index: n
 
 export default function CaseStudies() {
   return (
-    <section id="work" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-background relative overflow-hidden">
+    <section id="work" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <div className="absolute inset-0 z-[-1] bg-background" />
       <div className="w-full max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-8 sm:mb-12">
           <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-2">FEATURED WORK</motion.h2>

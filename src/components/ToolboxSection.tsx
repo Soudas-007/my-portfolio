@@ -14,7 +14,8 @@ const tools = [
 
 export default function ToolboxSection() {
   return (
-    <section id="toolbox" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-background relative overflow-hidden">
+    <section id="toolbox" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <div className="absolute inset-0 z-[-1] bg-background" />
       <div className="w-full max-w-6xl mx-auto text-center relative z-10">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-8 sm:mb-10">
           <motion.h2 className="font-pixel text-fluid-h2 text-primary mb-2">CREATIVE TOOLBOX 💻</motion.h2>

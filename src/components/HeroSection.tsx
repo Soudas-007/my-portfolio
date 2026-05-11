@@ -172,12 +172,12 @@ export default function HeroSection() {
     <section
       id="home"
       ref={containerRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-x-hidden bg-background px-4 py-20"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-x-hidden px-4 py-20"
     >
       <FloatingNavbar />
 
       {/* ── BACKGROUND AMBIENCE ── */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-[-1] pointer-events-none bg-background">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9F0]/30 to-transparent" />
       </div>
 

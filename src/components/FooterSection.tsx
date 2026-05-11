@@ -6,8 +6,8 @@ import { SiBehance } from "react-icons/si";
 
 export default function FooterSection() {
   return (
-    <footer id="contact" className="relative pt-12 sm:pt-16 pb-6 bg-[#0B0F1A] overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F1A] via-[#141B2D] to-[#1C253D] z-0" />
+    <footer id="contact" className="relative pt-12 sm:pt-16 pb-6 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F1A] via-[#141B2D] to-[#1C253D] z-[-1]" />
       <div className="w-full max-w-3xl mx-auto px-4 relative z-10 flex flex-col items-center text-center">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-10">
           <motion.h2 className="font-pixel text-fluid-h2 text-white mb-3" style={{ textShadow: "2px 2px 0px var(--color-primary)" }}>LET&apos;S CONNECT</motion.h2>
