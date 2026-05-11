@@ -89,95 +89,88 @@ function FloatingNavbar() {
       initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1, type: "spring", bounce: 0.4 }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-auto w-[calc(100%-2rem)] max-w-6xl flex items-center justify-between"
+      className="fixed top-6 left-0 right-0 z-50 pointer-events-none px-6"
     >
-      <nav className="flex items-center justify-between px-3 py-2 bg-surface/90 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)]">
-        {/* Desktop nav */}
-        <div className="hidden sm:flex items-center gap-1">
-          {navItems.map((item) => (
-            <motion.a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              whileHover={{ y: -3, scale: 1.08 }}
-              whileTap={{ scale: 0.92, y: 2 }}
-              className="px-3 py-1.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
-            >
-              {item}
-            </motion.a>
-          ))}
-        </div>
-
-        {/* Mobile: brand + hamburger */}
-        <span className="sm:hidden font-pixel text-sm font-bold text-primary px-2">SOUDAS</span>
-        <button
-          className="sm:hidden p-2 rounded-lg hover:bg-white/60 transition-colors"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          <div className="flex flex-col gap-1">
-            <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
-            <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
-          </div>
-        </button>
-
-        {/* Status dot — desktop only */}
-        <div className="hidden md:flex items-center gap-2 ml-2 pl-3 border-l-2 border-primary/20">
-          <motion.div
-            animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-2 h-2 rounded-full bg-[var(--color-accent-green)]"
-          />
-          <span className="text-xs font-bold text-secondary whitespace-nowrap">Vibe Coding... ✨</span>
-        </div>
-      </nav>
-
-      {/* Top Right Resume Button */}
-      <div className="hidden sm:block">
-        <motion.a
-          href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 bg-[var(--color-accent-yellow)] border-3 border-primary rounded-xl font-pixel text-xs font-bold text-primary shadow-[4px_4px_0px_var(--color-primary)]"
-        >
-          View Resume 📄
-        </motion.a>
-      </div>
-
-      {/* Mobile dropdown */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.97 }}
-            transition={{ type: "spring", bounce: 0.3 }}
-            className="sm:hidden absolute top-16 left-0 right-0 bg-surface/95 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)] p-3 flex flex-col gap-1"
-          >
+      <div className="max-w-7xl mx-auto flex items-center justify-center relative">
+        {/* CENTERED NAV */}
+        <nav className="flex items-center justify-between px-3 py-2 bg-surface/90 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)] pointer-events-auto">
+          {/* Desktop nav */}
+          <div className="hidden sm:flex items-center gap-2">
             {navItems.map((item) => (
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setMenuOpen(false)}
-                className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
+                whileHover={{ y: -3, scale: 1.08 }}
+                whileTap={{ scale: 0.92, y: 2 }}
+                className="px-4 py-1.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
               >
                 {item}
               </motion.a>
             ))}
-            <motion.a
-              href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
-              target="_blank"
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl bg-[var(--color-accent-yellow)]/20 mt-1"
+          </div>
+
+          {/* Mobile: brand + hamburger */}
+          <span className="sm:hidden font-pixel text-sm font-bold text-primary px-2">SOUDAS</span>
+          <button
+            className="sm:hidden p-2 rounded-lg hover:bg-white/60 transition-colors"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            <div className="flex flex-col gap-1">
+              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+            </div>
+          </button>
+        </nav>
+
+        {/* Top Right Resume Button - Extreme Right */}
+        <div className="hidden sm:block absolute right-0 pointer-events-auto">
+          <motion.a
+            href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-5 py-2.5 bg-[var(--color-accent-yellow)] border-3 border-primary rounded-xl font-pixel text-xs font-bold text-primary shadow-[4px_4px_0px_var(--color-primary)]"
+          >
+            View Resume 📄
+          </motion.a>
+        </div>
+
+        {/* Mobile dropdown */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ type: "spring", bounce: 0.3 }}
+              className="sm:hidden absolute top-16 left-0 right-0 bg-surface/95 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)] p-3 flex flex-col gap-1 pointer-events-auto"
             >
-              View Resume 📄
-            </motion.a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {navItems.map((item) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setMenuOpen(false)}
+                  className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
+                >
+                  {item}
+                </motion.a>
+              ))}
+              <motion.a
+                href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
+                target="_blank"
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl bg-[var(--color-accent-yellow)]/20 mt-1"
+              >
+                View Resume 📄
+              </motion.a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
