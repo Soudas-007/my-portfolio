@@ -59,6 +59,7 @@ export default function PixelCharacter() {
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        whileHover={{ scale: 1.1, y: -15 }}
         className="relative w-full h-full flex items-center justify-center pointer-events-auto cursor-pointer"
       >
         <svg

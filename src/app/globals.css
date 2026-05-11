@@ -66,14 +66,14 @@ section {
 /* Fluid typography helpers */
 @layer utilities {
   .text-fluid-h1 {
-    /* Sophisticated scaling for cinematic titles */
-    font-size: clamp(2.4rem, 6vw + 2vh, 7rem);
+    /* More conservative scaling for laptops to prevent overlap */
+    font-size: clamp(2.2rem, 5vw + 2vh, 6.5rem);
   }
   .text-fluid-h2 {
-    font-size: clamp(1.8rem, 4vw + 1.5vh, 4rem);
+    font-size: clamp(1.6rem, 3.5vw + 1.5vh, 3.5rem);
   }
   .text-fluid-p {
-    font-size: clamp(0.95rem, 1vw + 0.5vh, 1.25rem);
+    font-size: clamp(0.9rem, 0.8vw + 0.4vh, 1.15rem);
   }
 }
 

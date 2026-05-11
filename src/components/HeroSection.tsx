@@ -8,7 +8,6 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import PixelCharacter from "./PixelCharacter";
 
 /* ── HELPERS ── */
 
@@ -180,11 +179,6 @@ export default function HeroSection() {
       {/* ── BACKGROUND AMBIENCE ── */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9F0]/30 to-transparent" />
-        
-        {/* Central Mascot - Primary Visual */}
-        <div className="absolute right-[5%] lg:right-[10%] top-1/2 -translate-y-1/2 hidden md:block pointer-events-auto">
-          <PixelCharacter />
-        </div>
       </div>
 
       {/* ── CENTRAL CONTENT ── */}
@@ -222,7 +216,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
-          className="text-secondary font-semibold max-w-lg lg:max-w-xl mx-auto leading-relaxed mb-8 lg:mb-10 px-4"
+          className="text-secondary font-semibold max-w-lg lg:max-w-xl mx-auto leading-relaxed mb-10 lg:mb-16 px-4"
           style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.25rem)" }}
         >
           Designing thoughtful digital experiences through creativity, storytelling, and playful interactions.
@@ -253,11 +247,6 @@ export default function HeroSection() {
           <TiltButton href="#contact" className="w-full sm:w-auto max-w-full">
             Connect 🤝
           </TiltButton>
-          
-          {/* Mascot for Mobile - centered below buttons */}
-          <div className="md:hidden mt-12 scale-75">
-            <PixelCharacter />
-          </div>
         </div>
 
         {/* Lower tags removed as requested */}

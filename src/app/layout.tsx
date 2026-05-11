@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import CustomCursor from "@/components/CustomCursor";
+import GlobalCompanion from "@/components/GlobalCompanion";
 
 export default function RootLayout({
   children,
@@ -31,6 +32,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-body bg-background text-primary overflow-x-hidden">
         <CustomCursor />
+        <GlobalCompanion />
         {children}
       </body>
     </html>
