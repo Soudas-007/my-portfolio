@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -8,18 +8,10 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
+import PixelCharacter from "./PixelCharacter";
 
 /* ── HELPERS ── */
-function useWindowSize() {
-  const [size, setSize] = useState({ width: 0, height: 0 });
-  useEffect(() => {
-    const handleResize = () => setSize({ width: window.innerWidth, height: window.innerHeight });
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return size;
-}
+
 
 /* ── TILT BUTTON ── */
 function TiltButton({
@@ -162,223 +154,7 @@ function FloatingNavbar() {
   );
 }
 
-/* ── ADAPTIVE DRAGGABLE ── */
-function DraggableUI({
-  children,
-  className = "",
-  constraintsRef,
-  initialPos = { x: 0, y: 0 },
-  scale = 1
-}: {
-  children: React.ReactNode;
-  className?: string;
-  constraintsRef: React.RefObject<HTMLDivElement | null>;
-  initialPos?: { x: number; y: number };
-  scale?: number;
-}) {
-  const x = useMotionValue(initialPos.x);
-  const y = useMotionValue(initialPos.y);
-
-  return (
-    <motion.div
-      drag
-      dragConstraints={constraintsRef}
-      dragElastic={0.05}
-      style={{ x, y, scale }}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale }}
-      whileHover={{ scale: scale * 1.05, zIndex: 50 }}
-      whileDrag={{ scale: scale * 1.1, cursor: "grabbing" }}
-      className={`absolute pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-function MiniWindow({ title, children, colorClass }: { title: string; children: React.ReactNode; colorClass: string }) {
-  return (
-    <div className={`w-32 md:w-40 lg:w-48 bg-white border-2 border-primary rounded-lg overflow-hidden shadow-[3px_3px_0px_var(--color-primary)]`}>
-      <div className={`${colorClass} border-b-2 border-primary px-2 py-1 flex items-center justify-between`}>
-        <span className="text-[6px] md:text-[8px] font-bold font-pixel text-primary truncate">{title}</span>
-        <div className="flex gap-0.5">
-          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-red-400" />
-          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-yellow-400" />
-          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-green-400" />
-        </div>
-      </div>
-      <div className="p-2 md:p-3 bg-white/40">{children}</div>
-    </div>
-  );
-}
-
-function WireframeCard() {
-  return (
-    <div className="w-24 md:w-32 h-32 md:h-40 bg-white/90 border-2 border-primary border-dashed rounded-lg flex flex-col p-2 gap-2">
-      <div className="w-full h-1/2 bg-primary/5 border border-primary/10 rounded" />
-      <div className="w-3/4 h-1.5 bg-primary/10 rounded" />
-      <div className="w-full h-1 bg-primary/10 rounded" />
-      <div className="w-2/3 h-1 bg-primary/10 rounded" />
-    </div>
-  );
-}
-
-function LargeFigmaWindow() {
-  return (
-    <div className="w-56 md:w-64 lg:w-80 bg-white border-2 border-primary rounded-xl overflow-hidden shadow-[6px_6px_0px_var(--color-primary)]">
-      <div className="bg-[#1E1E1E] border-b-2 border-primary px-3 py-1.5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded bg-[#F24E1E]" />
-          <span className="text-[8px] font-bold font-pixel text-white/80">User_Journey_Flow.fig</span>
-        </div>
-        <div className="flex gap-1">
-          <div className="w-2 h-2 rounded-full bg-white/10" />
-          <div className="w-2 h-2 rounded-full bg-white/10" />
-        </div>
-      </div>
-      <div className="p-4 bg-[#F5F5F5] relative overflow-hidden h-32 md:h-40 lg:h-48">
-        {/* Blurred screens */}
-        <div className="absolute top-4 left-4 w-20 h-28 bg-white border border-primary/20 rounded shadow-sm flex flex-col p-1 gap-1">
-           <div className="w-full h-8 bg-blue-100 rounded" />
-           <div className="w-2/3 h-2 bg-primary/5 rounded" />
-           <div className="w-full h-1 bg-primary/5 rounded" />
-        </div>
-        <div className="absolute top-10 left-28 w-20 h-28 bg-white border border-primary/20 rounded shadow-sm blur-[1px] flex flex-col p-1 gap-1">
-           <div className="w-full h-8 bg-green-100 rounded" />
-           <div className="w-2/3 h-2 bg-primary/5 rounded" />
-           <div className="w-full h-1 bg-primary/5 rounded" />
-        </div>
-        {/* Prototype lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
-          <path d="M100,50 C120,50 120,80 140,80" stroke="var(--color-primary)" fill="none" strokeWidth="1" strokeDasharray="2,2" />
-        </svg>
-        {/* UI Layers */}
-        <div className="absolute bottom-2 right-2 flex flex-col gap-1 items-end">
-          <div className="px-1.5 py-0.5 bg-primary text-white text-[6px] font-pixel rounded">LAYER_01</div>
-          <div className="px-1.5 py-0.5 bg-primary/20 text-primary text-[6px] font-pixel rounded">COMPONENT</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MobileMockup() {
-  return (
-    <div className="w-24 md:w-32 lg:w-36 aspect-[9/19] bg-[#121212] border-3 border-primary rounded-[2rem] p-1.5 shadow-[5px_5px_0px_var(--color-primary)] relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-4 bg-[#121212] rounded-b-lg border-x-2 border-b-2 border-primary z-10" />
-      <div className="w-full h-full bg-white rounded-[1.5rem] overflow-hidden relative">
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-50 to-purple-50" />
-        <div className="flex flex-col p-3 gap-3">
-          <div className="w-full h-12 bg-primary/5 rounded-xl border border-primary/10" />
-          <div className="w-full h-24 bg-primary/5 rounded-xl border border-primary/10" />
-          <div className="flex gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/10" />
-            <div className="w-8 h-8 rounded-lg bg-primary/10" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AtmosphereGrid() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Subtle Pixel Grid */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(var(--color-primary) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      
-      {/* Prototype Connecting Lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.05]">
-        <pattern id="lines" width="200" height="200" patternUnits="userSpaceOnUse">
-          <path d="M 0 100 Q 50 50 100 100 T 200 100" fill="none" stroke="var(--color-primary)" strokeWidth="1" strokeDasharray="4 4" />
-        </pattern>
-        <rect width="100%" height="100%" fill="url(#lines)" />
-      </svg>
-      
-      {/* Interaction Arrows */}
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.2, 0], x: [0, 20, 40], y: [0, -10, -20] }}
-          transition={{ duration: 4, delay: i * 2, repeat: Infinity }}
-          className="absolute text-primary text-[10px]"
-          style={{ 
-            top: `${20 + i * 15}%`, 
-            left: `${10 + i * 20}%`,
-            rotate: "45deg"
-          }}
-        >
-          →
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-/* ── PIXEL MASCOT ── */
-const bubbles = ["Vibe Coding... ✨", "Prototype Ready!", "UX Flow Updated"];
-
-function PixelMascot({ className = "" }: { className?: string }) {
-  const [bubbleIdx, setBubbleIdx] = useState(-1);
-  const [isWaving, setIsWaving] = useState(false);
-  const [isBlinking, setIsBlinking] = useState(false);
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setBubbleIdx(0), 3000);
-    const bubbleInterval = setInterval(() => setBubbleIdx((p) => (p + 1) % bubbles.length), 7000);
-    const waveInterval = setInterval(() => {
-      setIsWaving(true);
-      setTimeout(() => setIsWaving(false), 2000);
-    }, 10000);
-    const blinkInterval = setInterval(() => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 150);
-    }, 4000);
-
-    return () => { 
-      clearTimeout(t1); 
-      clearInterval(bubbleInterval); 
-      clearInterval(waveInterval);
-      clearInterval(blinkInterval);
-    };
-  }, []);
-
-  return (
-    <div className={`relative ${className}`}>
-      <AnimatePresence mode="wait">
-        {bubbleIdx >= 0 && (
-          <motion.div
-            key={bubbleIdx}
-            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.8 }}
-            className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 bg-white border-2 border-primary rounded-xl text-[8px] md:text-[10px] font-bold text-primary shadow-[3px_3px_0px_var(--color-primary)] z-20"
-          >
-            {bubbles[bubbleIdx]}
-            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-2 border-b-2 border-primary rotate-45" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.div 
-        animate={{ y: [0, -6, 0] }} 
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} 
-        className="w-10 h-14 md:w-14 md:h-18 bg-white border-3 border-primary rounded-t-full shadow-[4px_4px_0px_var(--color-primary)] flex flex-col items-center pt-4 md:pt-6 relative"
-      >
-        <div className="flex gap-1 md:gap-1.5">
-          <motion.div animate={{ height: isBlinking ? 2 : 6 }} className="w-1.5 h-1.5 md:w-2 bg-primary rounded-full" style={{ height: isBlinking ? "2px" : "6px" }} />
-          <motion.div animate={{ height: isBlinking ? 2 : 6 }} className="w-1.5 h-1.5 md:w-2 bg-primary rounded-full" style={{ height: isBlinking ? "2px" : "6px" }} />
-        </div>
-        
-        {/* Arm for waving */}
-        <motion.div 
-          animate={{ rotate: isWaving ? [0, -40, 0, -40, 0] : 0 }}
-          className="absolute -right-1 top-8 w-3 h-1.5 bg-white border-2 border-primary rounded-full origin-left" 
-        />
-      </motion.div>
-    </div>
-  );
-}
+/* Old components removed as mascot is now the focus */
 
 /* ── HERO COMPONENT ── */
 const tags = [
@@ -390,10 +166,8 @@ const tags = [
 ];
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const titleText = "SOUDAS SUR";
-  const { width } = useWindowSize();
-  const isLaptop = width > 1024 && width < 1536;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
@@ -406,59 +180,17 @@ export default function HeroSection() {
       {/* ── BACKGROUND AMBIENCE ── */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9F0]/30 to-transparent" />
-        <AtmosphereGrid />
         
-        {/* PRIMARY Supporting Visual - Top Left area but guides to center */}
-        <DraggableUI 
-          className="top-[18%] -left-[12%] lg:-left-[5%] xl:left-[6%] hidden md:block" 
-          constraintsRef={containerRef}
-          scale={isLaptop ? 0.65 : 0.85}
-        >
-          <LargeFigmaWindow />
-        </DraggableUI>
-        
-        {/* SECONDARY Supporting Visual - Bottom Right area */}
-        <DraggableUI 
-          className="bottom-[22%] -right-[10%] lg:right-[2%] xl:right-[6%] hidden lg:block" 
-          constraintsRef={containerRef}
-          scale={isLaptop ? 0.7 : 0.8}
-        >
-          <MobileMockup />
-        </DraggableUI>
-
-        {/* Supporting Mini-Windows */}
-        <DraggableUI 
-          className="top-[15%] right-[2%] xl:right-[12%] hidden 2xl:block" 
-          constraintsRef={containerRef}
-          scale={isLaptop ? 0.7 : 0.8}
-        >
-          <MiniWindow title="prototype_v2.fig" colorClass="bg-[var(--color-accent-yellow)]/20">
-            <div className="w-full h-10 bg-primary/5 rounded" />
-          </MiniWindow>
-        </DraggableUI>
-
-        <DraggableUI 
-          className="bottom-[18%] left-[2%] xl:left-[12%] hidden 2xl:block" 
-          constraintsRef={containerRef}
-          scale={isLaptop ? 0.6 : 0.75}
-        >
-          <WireframeCard />
-        </DraggableUI>
-
-        {/* Subtle Decorative Elements */}
-        <motion.div 
-          animate={{ x: [0, 8, 0], y: [0, -8, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
-          className="absolute top-[40%] right-[5%] xl:right-[18%] px-3 py-1 bg-white border-2 border-[var(--color-accent-blue)] rounded-full text-[8px] font-bold text-primary shadow-[2px_2px_0px_var(--color-accent-blue)] hidden 2xl:block"
-        >
-          ● Interactions
-        </motion.div>
+        {/* Central Mascot - Primary Visual */}
+        <div className="absolute right-[5%] lg:right-[10%] top-1/2 -translate-y-1/2 hidden md:block pointer-events-auto">
+          <PixelCharacter />
+        </div>
       </div>
 
       {/* ── CENTRAL CONTENT ── */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto pointer-events-none">
         
-        {/* Title with fluid responsive clamp */}
+        {/* Title with enhanced pop-out interaction */}
         <div className="mb-6 lg:mb-8 pointer-events-auto w-full max-w-[100vw] overflow-hidden px-2">
           <h1 className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] text-fluid-h1 transition-all duration-300">
             {titleText.split("").map((letter, i) => (
@@ -467,11 +199,16 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.05, type: "spring", stiffness: 200 }}
-                whileHover={{ y: -8, color: "var(--color-accent-yellow)" }}
-                className="inline-block"
+                whileHover={{ 
+                  y: -15, 
+                  scale: 1.2,
+                  rotate: [0, -5, 5, 0],
+                  color: "var(--color-accent-yellow)" 
+                }}
+                className="inline-block cursor-default"
                 style={{ 
                   whiteSpace: letter === " " ? "pre" : "normal",
-                  textShadow: "2px 2px 0px var(--color-accent-blue)"
+                  textShadow: "4px 4px 0px var(--color-accent-blue)"
                 }}
               >
                 {letter}
@@ -508,7 +245,7 @@ export default function HeroSection() {
           ))}
         </div>
 
-        {/* CTAs with Mascot integrated */}
+        {/* CTAs */}
         <div className="relative flex flex-col sm:flex-row items-center gap-4 lg:gap-6 pointer-events-auto w-full sm:w-auto px-8 sm:px-0">
           <TiltButton primary href="#work" className="w-full sm:w-auto max-w-full">
             Explore Projects 🚀
@@ -517,23 +254,13 @@ export default function HeroSection() {
             Connect 🤝
           </TiltButton>
           
-          {/* Mascot repositioned closer to CTAs - Always visible but scales on mobile */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.8 }}
-            className="absolute -right-12 sm:-right-24 md:-right-28 lg:-right-32 bottom-[-100%] sm:bottom-0 scale-75 sm:scale-100"
-          >
-            <PixelMascot />
-          </motion.div>
+          {/* Mascot for Mobile - centered below buttons */}
+          <div className="md:hidden mt-12 scale-75">
+            <PixelCharacter />
+          </div>
         </div>
 
-        {/* LOWER HERO ATMOSPHERE - Improved contrast */}
-        <div className="mt-12 opacity-60 pointer-events-none hidden sm:flex gap-8 text-[10px] font-pixel tracking-widest text-primary">
-           <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 3, repeat: Infinity }}>[ WIREFRAMING ]</motion.div>
-           <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 3, delay: 1, repeat: Infinity }}>[ PROTOTYPING ]</motion.div>
-           <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 3, delay: 2, repeat: Infinity }}>[ INTERACTION ]</motion.div>
-        </div>
+        {/* Lower tags removed as requested */}
       </div>
 
       {/* Scroll indicator - anchored to bottom */}
