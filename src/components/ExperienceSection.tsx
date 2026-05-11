@@ -115,7 +115,7 @@ export default function ExperienceSection() {
   }, []);
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden border-t-4 border-primary">
+    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden">
       {sparkles.map((s, i) => (
         <Sparkle key={`sparkle-${i}`} style={{ top: s.top, left: s.left }} delay={s.delay} />
       ))}
