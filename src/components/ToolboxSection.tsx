@@ -417,7 +417,7 @@ export default function ToolboxSection() {
   return (
     <section
       ref={containerRef}
-      className="py-32 px-6 bg-surface relative overflow-hidden border-t-4 border-primary"
+      className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-surface relative overflow-hidden border-t-4 border-primary"
     >
       {/* ── sparkles ── */}
       {sparkles.map((s, i) => (
@@ -441,7 +441,7 @@ export default function ToolboxSection() {
         ))}
       </div>
 
-      {/* ── floating draggable stars ── */}
+      {/* ── floating draggable stars — hidden on mobile ── */}
       <motion.div
         drag
         dragConstraints={containerRef}
@@ -449,7 +449,7 @@ export default function ToolboxSection() {
         whileHover={{ scale: 1.4, rotate: 90 }}
         animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 3, repeat: Infinity }}
-        className="absolute top-20 right-[12%] w-6 h-6 bg-[var(--color-accent-yellow)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10"
+        className="absolute top-20 right-[12%] w-6 h-6 bg-[var(--color-accent-yellow)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10 hidden sm:block"
       />
       <motion.div
         drag
@@ -458,7 +458,7 @@ export default function ToolboxSection() {
         whileHover={{ scale: 1.4, rotate: -90 }}
         animate={{ y: [0, 12, 0], opacity: [0.4, 0.9, 0.4] }}
         transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-        className="absolute bottom-28 left-[8%] w-7 h-7 bg-[var(--color-accent-red)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10"
+        className="absolute bottom-28 left-[8%] w-7 h-7 bg-[var(--color-accent-red)] rotate-45 border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] cursor-grab pointer-events-auto z-10 hidden sm:block"
       />
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -469,7 +469,7 @@ export default function ToolboxSection() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <motion.h2 className="font-pixel text-5xl md:text-6xl text-primary mb-4 drop-shadow-[4px_4px_0px_#E0D8C8]">
+          <motion.h2 className="font-pixel text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary mb-4 drop-shadow-[4px_4px_0px_#E0D8C8]">
             CREATIVE TOOLBOX
           </motion.h2>
           <motion.p
@@ -477,7 +477,7 @@ export default function ToolboxSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
-            className="text-secondary font-semibold text-lg max-w-lg mx-auto"
+            className="text-secondary font-semibold text-sm sm:text-lg max-w-lg mx-auto"
           >
             The digital tools behind my ideas, experiments, and creative workflows.
           </motion.p>
@@ -498,12 +498,12 @@ export default function ToolboxSection() {
         </motion.div>
 
         {/* ─── Tool Cards Grid ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
           {tools.map((tool, index) => (
             <TiltCard
               key={tool.name}
               color={tool.color}
-              className={`p-6 min-h-[320px] flex flex-col justify-end ${
+              className={`p-4 sm:p-6 min-h-[260px] sm:min-h-[320px] flex flex-col justify-end ${
                 /* last 2 cards: center in a 2-col subgrid on lg */
                 index === 3 ? "lg:col-start-1 lg:justify-self-end lg:ml-auto" : ""
               }${index === 4 ? "lg:col-start-2 lg:col-end-3" : ""}`}
