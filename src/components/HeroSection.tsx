@@ -1,15 +1,27 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   motion,
   useMotionValue,
   useSpring,
   useTransform,
   AnimatePresence,
-  animate,
 } from "framer-motion";
 
+/* ── HELPERS ── */
+function useWindowSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  useEffect(() => {
+    const handleResize = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return size;
+}
+
+/* ── TILT BUTTON ── */
 function TiltButton({
   children,
   primary,
@@ -25,10 +37,10 @@ function TiltButton({
 }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const mx = useSpring(x, { stiffness: 300, damping: 20 });
-  const my = useSpring(y, { stiffness: 300, damping: 20 });
-  const rotateX = useTransform(my, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mx, [-0.5, 0.5], ["-10deg", "10deg"]);
+  const mx = useSpring(x, { stiffness: 300, damping: 25 });
+  const my = useSpring(y, { stiffness: 300, damping: 25 });
+  const rotateX = useTransform(my, [-0.5, 0.5], ["12deg", "-12deg"]);
+  const rotateY = useTransform(mx, [-0.5, 0.5], ["-12deg", "12deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -40,45 +52,39 @@ function TiltButton({
   const buttonContent = (
     <motion.div
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative px-6 sm:px-10 py-3 sm:py-5 font-bold font-pixel text-base sm:text-xl border-4 border-primary rounded-2xl flex items-center gap-2 cursor-pointer shadow-[6px_6px_0px_var(--color-pixel-dark)] transition-shadow ${
+      className={`relative px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 lg:py-4.5 font-bold font-pixel text-[10px] sm:text-xs md:text-sm lg:text-base border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_var(--color-pixel-dark)] sm:shadow-[4px_4px_0px_var(--color-pixel-dark)] lg:shadow-[5px_5px_0px_var(--color-pixel-dark)] transition-all ${
         primary ? "bg-[var(--color-accent-blue)] text-primary" : "bg-surface text-primary"
       } ${className}`}
     >
-      <span style={{ transform: "translateZ(20px)" }} className="flex items-center gap-2">
+      <span style={{ transform: "translateZ(15px)" }} className="flex items-center gap-2 whitespace-nowrap">
         {children}
       </span>
     </motion.div>
   );
 
+  const wrapperProps = {
+    onMouseMove: handleMouseMove,
+    onMouseLeave: handleMouseLeave,
+    whileHover: { scale: 1.02, y: -4 },
+    whileTap: { scale: 0.96, y: 2 },
+  };
+
   if (href) {
     return (
-      <motion.a
-        href={href}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        whileHover={{ scale: 1.05, y: -6 }}
-        whileTap={{ scale: 0.93, y: 4 }}
-        className="block"
-      >
+      <motion.a href={href} {...wrapperProps} className="block w-full sm:w-auto">
         {buttonContent}
       </motion.a>
     );
   }
 
   return (
-    <motion.button
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.05, y: -6 }}
-      whileTap={{ scale: 0.93, y: 4 }}
-      onClick={onClick}
-    >
+    <motion.button {...wrapperProps} onClick={onClick} className="w-full sm:w-auto">
       {buttonContent}
     </motion.button>
   );
 }
 
-/* ── REVISED NAV BAR ── */
+/* ── NAV BAR ── */
 const navItems = ["Home", "Work", "About", "Contact"];
 
 function FloatingNavbar() {
@@ -86,87 +92,58 @@ function FloatingNavbar() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1, type: "spring", bounce: 0.4 }}
-      className="fixed top-6 left-0 right-0 z-50 pointer-events-none px-6"
+      className="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none px-4"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-center relative">
-        {/* CENTERED NAV */}
-        <nav className="flex items-center justify-between px-3 py-2 bg-surface/90 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)] pointer-events-auto">
-          {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-2">
+      <div className="max-w-6xl mx-auto flex items-center justify-center relative">
+        <nav className="flex items-center justify-between px-3 py-1.5 bg-surface/90 backdrop-blur-md border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl shadow-[4px_4px_0px_var(--color-pixel-dark)] pointer-events-auto">
+          <div className="hidden sm:flex items-center gap-0.5 md:gap-1">
             {navItems.map((item) => (
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                whileHover={{ y: -3, scale: 1.08 }}
-                whileTap={{ scale: 0.92, y: 2 }}
-                className="px-4 py-1.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
+                whileHover={{ y: -2, backgroundColor: "rgba(255,255,255,0.4)" }}
+                className="px-3 py-1.5 text-[10px] md:text-xs font-bold text-primary rounded-lg transition-colors cursor-pointer"
               >
                 {item}
               </motion.a>
             ))}
           </div>
-
-          {/* Mobile: brand + hamburger */}
-          <span className="sm:hidden font-pixel text-sm font-bold text-primary px-2">SOUDAS</span>
-          <button
-            className="sm:hidden p-2 rounded-lg hover:bg-white/60 transition-colors"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
+          <span className="sm:hidden font-pixel text-[10px] font-bold text-primary px-2">SOUDAS</span>
+          <button className="sm:hidden p-1.5" onClick={() => setMenuOpen((v) => !v)}>
             <div className="flex flex-col gap-1">
-              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
-              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block w-5 h-0.5 bg-primary transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+              <span className={`block w-4 h-0.5 bg-primary transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+              <span className={`block w-4 h-0.5 bg-primary transition-all ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-4 h-0.5 bg-primary transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
             </div>
           </button>
         </nav>
 
-        {/* Top Right Resume Button - Extreme Right */}
         <div className="hidden sm:block absolute right-0 pointer-events-auto">
           <motion.a
             href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
             target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-5 py-2.5 bg-[var(--color-accent-yellow)] border-3 border-primary rounded-xl font-pixel text-xs font-bold text-primary shadow-[4px_4px_0px_var(--color-primary)]"
+            whileHover={{ scale: 1.05 }}
+            className="px-3 py-1.5 bg-[var(--color-accent-yellow)] border-2 border-primary rounded-lg font-pixel text-[9px] font-bold text-primary shadow-[2px_2px_0px_var(--color-primary)]"
           >
             View Resume 📄
           </motion.a>
         </div>
 
-        {/* Mobile dropdown */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ type: "spring", bounce: 0.3 }}
-              className="sm:hidden absolute top-16 left-0 right-0 bg-surface/95 backdrop-blur-md border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-pixel-dark)] p-3 flex flex-col gap-1 pointer-events-auto"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-14 left-0 right-0 bg-surface border-3 border-primary rounded-xl p-2 flex flex-col gap-1 shadow-xl pointer-events-auto sm:hidden"
             >
               {navItems.map((item) => (
-                <motion.a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setMenuOpen(false)}
-                  className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl hover:bg-white/60 transition-colors cursor-pointer"
-                >
+                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="px-4 py-2 text-xs font-bold text-primary rounded-lg hover:bg-black/5">
                   {item}
-                </motion.a>
+                </a>
               ))}
-              <motion.a
-                href="/Soudas_Sur_UI_UX_Designer_Resume.pdf"
-                target="_blank"
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2.5 text-sm font-bold text-primary rounded-xl bg-[var(--color-accent-yellow)]/20 mt-1"
-              >
-                View Resume 📄
-              </motion.a>
             </motion.div>
           )}
         </AnimatePresence>
@@ -175,44 +152,34 @@ function FloatingNavbar() {
   );
 }
 
-/* ── DRAGGABLE UI ELEMENTS ── */
+/* ── ADAPTIVE DRAGGABLE ── */
 function DraggableUI({
   children,
-  initialPos,
   className = "",
   constraintsRef,
-  magnetic = true
+  initialPos = { x: 0, y: 0 },
+  scale = 1
 }: {
   children: React.ReactNode;
-  initialPos: { x: number; y: number };
   className?: string;
   constraintsRef: React.RefObject<HTMLDivElement | null>;
-  magnetic?: boolean;
+  initialPos?: { x: number; y: number };
+  scale?: number;
 }) {
-  // Using motion values for coordinates to handle "magnetic snapping back slowly"
   const x = useMotionValue(initialPos.x);
   const y = useMotionValue(initialPos.y);
-
-  // If magnetic, it will transition back to its home position on drag end
-  const onDragEnd = () => {
-    if (magnetic) {
-      animate(x, initialPos.x, { type: "spring", stiffness: 50, damping: 20 });
-      animate(y, initialPos.y, { type: "spring", stiffness: 50, damping: 20 });
-    }
-  };
 
   return (
     <motion.div
       drag
       dragConstraints={constraintsRef}
-      dragElastic={0.1}
-      style={{ x, y }}
-      onDragEnd={onDragEnd}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.05, zIndex: 50, cursor: "grab", rotate: 2 }}
-      whileDrag={{ scale: 1.1, cursor: "grabbing", boxShadow: "15px 15px 0px rgba(0,0,0,0.15)", rotate: -2 }}
-      className={`absolute pointer-events-auto ${className}`}
+      dragElastic={0.05}
+      style={{ x, y, scale }}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale }}
+      whileHover={{ scale: scale * 1.05, zIndex: 50 }}
+      whileDrag={{ scale: scale * 1.1, cursor: "grabbing" }}
+      className={`absolute pointer-events-auto cursor-grab active:cursor-grabbing ${className}`}
     >
       {children}
     </motion.div>
@@ -221,132 +188,69 @@ function DraggableUI({
 
 function MiniWindow({ title, children, colorClass }: { title: string; children: React.ReactNode; colorClass: string }) {
   return (
-    <div className={`w-40 sm:w-48 bg-white border-3 border-primary rounded-xl overflow-hidden shadow-[4px_4px_0px_var(--color-primary)]`}>
-      <div className={`${colorClass} border-b-3 border-primary px-2 py-1 flex items-center justify-between`}>
-        <span className="text-[8px] font-bold font-pixel text-primary truncate">{title}</span>
-        <div className="flex gap-1">
-          <div className="w-1.5 h-1.5 rounded-full border border-primary bg-red-400" />
-          <div className="w-1.5 h-1.5 rounded-full border border-primary bg-yellow-400" />
-          <div className="w-1.5 h-1.5 rounded-full border border-primary bg-green-400" />
+    <div className={`w-32 md:w-40 lg:w-48 bg-white border-2 border-primary rounded-lg overflow-hidden shadow-[3px_3px_0px_var(--color-primary)]`}>
+      <div className={`${colorClass} border-b-2 border-primary px-2 py-1 flex items-center justify-between`}>
+        <span className="text-[6px] md:text-[8px] font-bold font-pixel text-primary truncate">{title}</span>
+        <div className="flex gap-0.5">
+          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-red-400" />
+          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-yellow-400" />
+          <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full border border-primary bg-green-400" />
         </div>
       </div>
-      <div className="p-2 sm:p-3 bg-white/50">
-        {children}
-      </div>
+      <div className="p-2 md:p-3 bg-white/40">{children}</div>
     </div>
   );
 }
 
 function WireframeCard() {
   return (
-    <div className="w-24 sm:w-28 h-32 sm:h-36 bg-white/80 border-2 border-primary border-dashed rounded-lg flex flex-col p-2 gap-1.5">
-      <div className="w-full h-1/2 bg-primary/5 border border-primary/20 rounded flex items-center justify-center">
-        <div className="w-1/2 h-1/2 border border-primary/20 flex items-center justify-center">
-          <div className="w-full h-px bg-primary/20 rotate-45" />
-          <div className="w-full h-px bg-primary/20 -rotate-45" />
-        </div>
-      </div>
-      <div className="w-3/4 h-2 bg-primary/10 rounded" />
+    <div className="w-24 md:w-32 h-32 md:h-40 bg-white/90 border-2 border-primary border-dashed rounded-lg flex flex-col p-2 gap-2">
+      <div className="w-full h-1/2 bg-primary/5 border border-primary/10 rounded" />
+      <div className="w-3/4 h-1.5 bg-primary/10 rounded" />
       <div className="w-full h-1 bg-primary/10 rounded" />
-      <div className="w-full h-1 bg-primary/10 rounded" />
-      <div className="mt-auto flex justify-between">
-        <div className="w-6 h-4 border border-primary/20 rounded" />
-        <div className="w-6 h-4 bg-primary/20 rounded" />
-      </div>
+      <div className="w-2/3 h-1 bg-primary/10 rounded" />
     </div>
   );
 }
 
+/* ── PIXEL MASCOT ── */
 const bubbles = ["Vibe Coding... ✨", "Prototype Ready!", "UX Flow Updated"];
 
-function PixelMascot() {
+function PixelMascot({ className = "" }: { className?: string }) {
   const [bubbleIdx, setBubbleIdx] = useState(-1);
-  const [blinking, setBlinking] = useState(false);
-
   useEffect(() => {
-    const t1 = setTimeout(() => setBubbleIdx(0), 2500);
-    const interval = setInterval(() => { setBubbleIdx((prev) => (prev + 1) % bubbles.length); }, 6000);
+    const t1 = setTimeout(() => setBubbleIdx(0), 3000);
+    const interval = setInterval(() => setBubbleIdx((p) => (p + 1) % bubbles.length), 7000);
     return () => { clearTimeout(t1); clearInterval(interval); };
   }, []);
 
-  useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setBlinking(true);
-      setTimeout(() => setBlinking(false), 200);
-    }, 3500);
-    return () => clearInterval(blinkInterval);
-  }, []);
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.2 }}
-      className="absolute bottom-24 sm:bottom-28 right-[5%] sm:right-[12%] pointer-events-auto z-20 hidden sm:block"
-    >
+    <div className={`relative ${className}`}>
       <AnimatePresence mode="wait">
         {bubbleIdx >= 0 && (
           <motion.div
             key={bubbleIdx}
-            initial={{ opacity: 0, y: 8, scale: 0.8 }}
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.8 }}
-            transition={{ type: "spring", bounce: 0.5 }}
-            className="absolute -top-14 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 bg-white border-3 border-primary rounded-xl text-xs font-bold text-primary shadow-[3px_3px_0px_var(--color-primary)]"
+            exit={{ opacity: 0, y: -10, scale: 0.8 }}
+            className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 bg-white border-2 border-primary rounded-xl text-[8px] md:text-[10px] font-bold text-primary shadow-[3px_3px_0px_var(--color-primary)] z-20"
           >
             {bubbles[bubbleIdx]}
-            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-3 border-b-3 border-primary rotate-45" />
+            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-2 border-b-2 border-primary rotate-45" />
           </motion.div>
         )}
       </AnimatePresence>
-      <motion.div
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
-        className="relative w-14 h-16 cursor-pointer"
-      >
-        <div className="absolute inset-0 bg-white border-4 border-primary rounded-t-full overflow-hidden shadow-[4px_4px_0px_var(--color-primary)]">
-          <div className="flex justify-center gap-2 mt-4">
-            <motion.div animate={{ scaleY: blinking ? 0.1 : 1 }} className="w-2.5 h-3 bg-primary rounded-full" />
-            <motion.div animate={{ scaleY: blinking ? 0.1 : 1 }} className="w-2.5 h-3 bg-primary rounded-full" />
-          </div>
-          <div className="flex justify-center gap-5 mt-1">
-            <div className="w-2 h-1.5 rounded-full bg-[var(--color-accent-red)] opacity-50" />
-            <div className="w-2 h-1.5 rounded-full bg-[var(--color-accent-red)] opacity-50" />
-          </div>
+      <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="w-10 h-14 md:w-14 md:h-18 bg-white border-3 border-primary rounded-t-full shadow-[4px_4px_0px_var(--color-primary)] flex flex-col items-center pt-4 md:pt-6">
+        <div className="flex gap-1 md:gap-1.5">
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full" />
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full" />
         </div>
-        <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 56 12" fill="none">
-          <path d="M0,0 L0,6 Q7,12 14,6 Q21,0 28,6 Q35,12 42,6 Q49,0 56,6 L56,0 Z" fill="white" stroke="var(--color-primary)" strokeWidth="3.5" />
-        </svg>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
 
-function ScrollIndicator() {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 2 }}
-      className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
-    >
-      <span className="text-xs font-bold text-secondary tracking-wider">Scroll to Explore</span>
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        className="w-6 h-10 border-3 border-primary rounded-full flex justify-center pt-2"
-      >
-        <motion.div
-          animate={{ opacity: [1, 0.3, 1], y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-1.5 h-3 bg-primary rounded-full"
-        />
-      </motion.div>
-    </motion.div>
-  );
-}
-
+/* ── HERO COMPONENT ── */
 const tags = [
   { label: "UI/UX Designer", color: "var(--color-accent-blue)" },
   { label: "Visual Storyteller", color: "var(--color-accent-yellow)" },
@@ -357,250 +261,165 @@ const tags = [
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const title = "SOUDAS SUR";
-
-  const [particles, setParticles] = useState<{ top: string; left: string; xMove: number; duration: number; delay: number }[]>([]);
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      setParticles(
-        [...Array(15)].map(() => ({
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          xMove: (Math.random() - 0.5) * 40,
-          duration: 10 + Math.random() * 10,
-          delay: Math.random() * 5,
-        }))
-      );
-    });
-  }, []);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const titleX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 100, damping: 20 });
-  const titleY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-5, 5]), { stiffness: 100, damping: 20 });
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-      mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-    },
-    [mouseX, mouseY]
-  );
-
-  const letterVariants = {
-    hidden: { opacity: 0, y: 30, rotate: -8 },
-    visible: (i: number) => ({
-      opacity: 1, y: 0, rotate: 0,
-      transition: { delay: 0.4 + i * 0.05, type: "spring" as const, stiffness: 300, damping: 15 },
-    }),
-  };
+  const titleText = "SOUDAS SUR";
+  const { width } = useWindowSize();
+  const isLaptop = width > 1024 && width < 1536;
 
   return (
     <section
       id="home"
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background"
-      style={{ perspective: "1000px" }}
+      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background px-4 py-20"
     >
       <FloatingNavbar />
 
-      {/* ═══ CINEMATIC BACKGROUND ═══ */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9F0]/60 via-transparent to-[#F6F1E8]/40" />
-        <div
-          className="absolute inset-0 opacity-[0.03] mix-blend-multiply"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }}
-        />
-
-        {particles.map((p, i) => (
-          <motion.div
-            key={`p-${i}`}
-            animate={{ y: [0, -80, 0], x: [0, p.xMove, 0], opacity: [0.08, 0.3, 0.08] }}
-            transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
-            className="absolute w-1 h-1 bg-primary rounded-full"
-            style={{ top: p.top, left: p.left }}
-          />
-        ))}
-
-        {/* DRAGGABLE UI ELEMENTS */}
-        <DraggableUI initialPos={{ x: -320, y: -220 }} className="hidden lg:block" constraintsRef={containerRef}>
-          <MiniWindow title="healthcare_v2.fig" colorClass="bg-[var(--color-accent-blue)]/30">
-            <div className="flex flex-col gap-1.5">
-              <div className="w-full h-8 bg-primary/5 rounded flex items-center justify-between px-2">
-                <div className="w-4 h-4 bg-[var(--color-accent-red)]/40 rounded-full" />
-                <div className="w-12 h-2 bg-primary/10 rounded" />
-              </div>
-              <div className="flex gap-1.5">
-                <div className="flex-1 h-14 bg-primary/5 rounded flex items-center justify-center">
-                  <div className="w-4 h-4 border border-primary/20 rotate-45" />
-                </div>
-                <div className="flex-1 h-14 bg-primary/5 rounded flex flex-col p-1 gap-1">
-                  <div className="w-full h-1 bg-primary/10 rounded" />
-                  <div className="w-full h-1 bg-primary/10 rounded" />
-                  <div className="w-full h-1 bg-primary/10 rounded" />
-                </div>
-              </div>
-            </div>
+      {/* ── BACKGROUND AMBIENCE ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9F0]/30 to-transparent" />
+        
+        {/* Floating cards repositioned to stay away from center */}
+        <DraggableUI 
+          className="top-[15%] left-[4%] xl:left-[8%] hidden md:block" 
+          constraintsRef={containerRef}
+          scale={isLaptop ? 0.85 : 1}
+        >
+          <MiniWindow title="case_study_v1.fig" colorClass="bg-[var(--color-accent-blue)]/20">
+            <div className="w-full h-12 bg-primary/5 rounded flex items-center justify-center text-[10px] opacity-20">FIGMA</div>
           </MiniWindow>
         </DraggableUI>
 
-        <DraggableUI initialPos={{ x: 380, y: -180 }} className="hidden lg:block" constraintsRef={containerRef}>
-          <MiniWindow title="fintech_dashboard.fig" colorClass="bg-[var(--color-accent-yellow)]/30">
-            <div className="flex flex-col gap-2">
-              <div className="w-full h-12 border-2 border-primary/20 border-dashed rounded flex items-center justify-center relative overflow-hidden">
-                <motion.div animate={{ height: ["20%", "60%", "40%"] }} transition={{ duration: 2, repeat: Infinity }} className="w-2 bg-primary/20 mx-0.5 rounded-t" />
-                <motion.div animate={{ height: ["40%", "20%", "70%"] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} className="w-2 bg-primary/30 mx-0.5 rounded-t" />
-                <motion.div animate={{ height: ["60%", "40%", "30%"] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} className="w-2 bg-primary/20 mx-0.5 rounded-t" />
-              </div>
-              <div className="w-full h-3 bg-primary/10 rounded" />
-            </div>
+        <DraggableUI 
+          className="top-[12%] right-[4%] xl:right-[8%] hidden md:block" 
+          constraintsRef={containerRef}
+          scale={isLaptop ? 0.85 : 1}
+        >
+          <MiniWindow title="prototype_v2.fig" colorClass="bg-[var(--color-accent-yellow)]/20">
+            <div className="w-full h-10 bg-primary/5 rounded" />
           </MiniWindow>
         </DraggableUI>
 
-        <DraggableUI initialPos={{ x: -420, y: 180 }} className="hidden xl:block" constraintsRef={containerRef}>
-          <div className="w-18 h-18 bg-[var(--color-accent-yellow)] border-3 border-primary shadow-[4px_4px_0px_var(--color-primary)] flex items-center justify-center p-2 text-[9px] font-bold rotate-6 text-center cursor-grab active:cursor-grabbing">
-            Testing Interactions ✨
-          </div>
-        </DraggableUI>
-
-        <DraggableUI initialPos={{ x: 480, y: 120 }} className="hidden xl:block" constraintsRef={containerRef}>
+        <DraggableUI 
+          className="bottom-[18%] left-[5%] xl:left-[10%] hidden lg:block" 
+          constraintsRef={containerRef}
+          scale={isLaptop ? 0.8 : 1}
+        >
           <WireframeCard />
         </DraggableUI>
 
-        <DraggableUI initialPos={{ x: 200, y: 250 }} className="hidden lg:block" constraintsRef={containerRef}>
-          <MiniWindow title="travel_landing.fig" colorClass="bg-[var(--color-accent-green)]/30">
-            <div className="flex flex-col gap-1.5">
-              <div className="w-full h-16 bg-primary/5 rounded relative overflow-hidden">
-                <div className="absolute top-2 left-2 w-8 h-8 rounded-full border border-primary/20" />
-                <div className="absolute bottom-2 right-2 w-12 h-4 bg-primary/10 rounded-full" />
-              </div>
-              <div className="w-full h-2 bg-primary/10 rounded" />
-            </div>
-          </MiniWindow>
+        <DraggableUI 
+          className="bottom-[15%] right-[5%] xl:right-[12%] hidden sm:block" 
+          constraintsRef={containerRef}
+          scale={isLaptop ? 0.8 : 1}
+        >
+          <PixelMascot />
         </DraggableUI>
 
-        {/* Design Comments */}
-        <motion.div
-           animate={{ y: [0, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-           className="absolute top-[35%] left-[10%] px-3 py-1 bg-white border-2 border-[var(--color-accent-green)] rounded-full text-[9px] font-bold text-primary shadow-[2px_2px_0px_var(--color-accent-green)] hidden md:block"
+        {/* Decorative badge blobs */}
+        <motion.div 
+          animate={{ x: [0, 10, 0], y: [0, -10, 0] }}
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute top-[35%] left-[2%] xl:left-[12%] px-3 py-1 bg-white border-2 border-[var(--color-accent-green)] rounded-full text-[8px] font-bold text-primary shadow-[2px_2px_0px_var(--color-accent-green)] hidden xl:block"
         >
-          ● UX Flow Updated
+          ● UX Flow
         </motion.div>
-
-        <motion.div
-           animate={{ y: [0, 5, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-           className="absolute bottom-[30%] right-[15%] px-3 py-1 bg-white border-2 border-[var(--color-accent-blue)] rounded-full text-[9px] font-bold text-primary shadow-[2px_2px_0px_var(--color-accent-blue)] hidden md:block"
+        
+        <motion.div 
+          animate={{ x: [0, -8, 0], y: [0, 8, 0] }}
+          transition={{ duration: 5, repeat: Infinity }}
+          className="absolute bottom-[30%] right-[3%] xl:right-[15%] px-3 py-1 bg-white border-2 border-[var(--color-accent-blue)] rounded-full text-[8px] font-bold text-primary shadow-[2px_2px_0px_var(--color-accent-blue)] hidden xl:block"
         >
-          ● Prototype Ready
+          ● Visuals
         </motion.div>
-
-        {/* UX Arrows/Connector Line */}
-        <svg className="absolute top-[45%] left-[18%] w-32 h-16 opacity-30 hidden lg:block" viewBox="0 0 100 50">
-          <motion.path 
-            d="M0,25 Q50,0 100,25" 
-            fill="none" 
-            stroke="var(--color-primary)" 
-            strokeWidth="2" 
-            strokeDasharray="4 4"
-            animate={{ strokeDashoffset: [0, -20] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          />
-          <path d="M95,20 L100,25 L95,30" fill="none" stroke="var(--color-primary)" strokeWidth="2" />
-        </svg>
-
-        {/* Floating Folders */}
-        <DraggableUI initialPos={{ x: -280, y: 80 }} className="hidden lg:block" constraintsRef={containerRef}>
-          <div className="relative w-14 h-10 bg-[var(--color-accent-blue)]/50 border-3 border-primary rounded-lg shadow-[3px_3px_0px_rgba(0,0,0,0.1)]">
-            <div className="absolute -top-2 left-1 w-6 h-3 bg-[var(--color-accent-blue)] border-3 border-b-0 border-primary rounded-t-md" />
-            <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-primary/60">Assets</span>
-          </div>
-        </DraggableUI>
-
-        {/* Figma Inspired Ruler/Grid Lines (Subtle) */}
-        <div className="absolute inset-0 border-primary/5 [background-image:radial-gradient(var(--color-primary)_1px,transparent_1px)] [background-size:40px_40px] opacity-20 pointer-events-none" />
       </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="z-10 flex flex-col items-center text-center max-w-4xl w-full px-4 sm:px-6 mt-20 sm:mt-16 pointer-events-none">
-        {/* Title */}
-        <motion.div style={{ x: titleX, y: titleY }}>
-          <motion.h1
-            className="font-pixel text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-primary mb-4 flex flex-wrap justify-center pointer-events-auto cursor-crosshair"
-            style={{ textShadow: "4px 4px 0px var(--color-accent-blue), 8px 8px 0px rgba(108,198,255,0.25)" }}
+      {/* ── CENTRAL CONTENT ── */}
+      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto pointer-events-none">
+        
+        {/* Title with fluid responsive clamp */}
+        <div className="mb-6 lg:mb-8 pointer-events-auto">
+          <h1 
+            className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05]"
+            style={{ 
+              fontSize: "clamp(2.5rem, 6vw + 1.5vh, 6.5rem)",
+              textShadow: "2.5px 2.5px 0px var(--color-accent-blue)"
+            }}
           >
-            {title.split("").map((letter, i) => (
+            {titleText.split("").map((letter, i) => (
               <motion.span
                 key={i}
-                custom={i}
-                variants={letterVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover={{ y: -14, color: "var(--color-accent-yellow)", textShadow: "4px 4px 0px var(--color-accent-red), 8px 8px 0px rgba(255,107,107,0.2)", scale: 1.12 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.05, type: "spring", stiffness: 200 }}
+                whileHover={{ y: -8, color: "var(--color-accent-yellow)" }}
                 className="inline-block"
                 style={{ whiteSpace: "pre" }}
               >
                 {letter}
               </motion.span>
             ))}
-          </motion.h1>
-        </motion.div>
+          </h1>
+        </div>
 
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="text-sm sm:text-base md:text-xl text-secondary mb-6 sm:mb-8 max-w-xl sm:max-w-2xl leading-relaxed font-semibold px-2"
+          transition={{ delay: 0.9 }}
+          className="text-secondary font-semibold max-w-lg lg:max-w-xl mx-auto leading-relaxed mb-8 lg:mb-10 px-4"
+          style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.15rem)" }}
         >
           Designing thoughtful digital experiences through creativity, storytelling, and playful interactions.
         </motion.p>
 
-        {/* Identity Tags */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 pointer-events-auto"
-        >
+        {/* Identity Tags - Fixed responsiveness */}
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 lg:mb-14 pointer-events-auto px-4">
           {tags.map((tag, i) => (
             <motion.div
               key={tag.label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.3 + i * 0.08 }}
-              whileHover={{ y: -5, scale: 1.08, boxShadow: `0 0 14px ${tag.color}` }}
-              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-bold border-2 border-primary rounded-full shadow-[3px_3px_0px_var(--color-primary)] cursor-pointer bg-white/70 backdrop-blur-sm"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.1 + i * 0.08 }}
+              whileHover={{ y: -2, scale: 1.05 }}
+              className="px-3 sm:px-4 py-1.5 md:py-2 text-[9px] md:text-xs font-bold border-2 border-primary rounded-full bg-white/80 backdrop-blur-sm shadow-[3px_3px_0px_var(--color-primary)] cursor-pointer"
               style={{ borderColor: tag.color }}
             >
               {tag.label}
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* CTA Buttons */}
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5 }}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-5 pointer-events-auto w-full sm:w-auto px-4 sm:px-0"
-          style={{ perspective: "800px" }}
+          className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 pointer-events-auto w-full sm:w-auto px-8 sm:px-0"
         >
-          <TiltButton primary href="#work" className="justify-center">
-            Explore Projects <span className="text-xl sm:text-2xl">🚀</span>
+          <TiltButton primary href="#work" className="w-full sm:w-auto">
+            Explore Projects 🚀
           </TiltButton>
-          <TiltButton href="#contact" className="justify-center">
-            Connect <span className="text-xl sm:text-2xl">🤝</span>
+          <TiltButton href="#contact" className="w-full sm:w-auto">
+            Connect 🤝
           </TiltButton>
         </motion.div>
       </div>
 
-      <PixelMascot />
-      <ScrollIndicator />
+      {/* Scroll indicator - anchored to bottom */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.2 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none hidden sm:flex"
+      >
+        <span className="text-[10px] font-bold text-secondary uppercase tracking-widest opacity-50">Scroll</span>
+        <div className="w-5 h-8 border-2 border-primary/20 rounded-full flex justify-center pt-1.5">
+          <motion.div 
+            animate={{ y: [0, 4, 0], opacity: [1, 0.4, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-1 h-2 bg-primary/20 rounded-full"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 }
