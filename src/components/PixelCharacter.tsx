@@ -29,85 +29,105 @@ export default function PixelCharacter() {
     };
   }, []);
 
-  const springConfig = { stiffness: 150, damping: 15 };
+  const springConfig = { stiffness: 120, damping: 20 };
   const headX = useSpring(mousePos.x * 6, springConfig);
   const headY = useSpring(mousePos.y * 6, springConfig);
-  const eyeX = useSpring(mousePos.x * 2.5, springConfig);
-  const eyeY = useSpring(mousePos.y * 2.5, springConfig);
+  const eyeX = useSpring(mousePos.x * 2, springConfig);
+  const eyeY = useSpring(mousePos.y * 2, springConfig);
 
   return (
-    <div ref={characterRef} className="relative w-32 h-40 md:w-40 md:h-48 lg:w-44 lg:h-56 select-none pointer-events-none">
+    <div ref={characterRef} className="relative w-48 h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 select-none pointer-events-none">
       <motion.div
-        animate={{ y: [0, -8, 0] }}
+        animate={{ y: [0, -10, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         className="relative w-full h-full flex items-center justify-center"
       >
-        <svg viewBox="0 0 240 320" className="w-full h-full drop-shadow-[0_10px_20px_rgba(0,0,0,0.2)]" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* SHOES */}
-          <g id="shoes">
-            <path d="M75 295 L65 310 H95 L100 295 Z" fill="#FFF" stroke="#000" strokeWidth="2" />
-            <path d="M75 295 L70 305 H90 L95 295 Z" fill="#22D3EE" />
-            <path d="M140 295 L130 310 H160 L165 295 Z" fill="#FFF" stroke="#000" strokeWidth="2" />
-            <path d="M140 295 L135 305 H155 L160 295 Z" fill="#22D3EE" />
+        <svg viewBox="0 0 240 320" className="w-full h-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.25)]" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* SNEAKERS - HIGH FIDELITY */}
+          <g id="sneakers">
+            {/* Left */}
+            <path d="M70 290 L60 305 Q60 315 75 315 H100 L105 290 Z" fill="#FFF" stroke="#000" strokeWidth="2.5" />
+            <path d="M70 290 L65 305 H95 L100 290 Z" fill="#22D3EE" />
+            <path d="M75 295 L90 305" stroke="#000" strokeWidth="1.5" /> {/* Laces */}
+            <path d="M60 310 H105" stroke="#000" strokeWidth="1" strokeOpacity="0.3" /> {/* Sole line */}
+            
+            {/* Right */}
+            <path d="M140 290 L130 305 Q130 315 145 315 H170 L175 290 Z" fill="#FFF" stroke="#000" strokeWidth="2.5" />
+            <path d="M140 290 L135 305 H165 L170 290 Z" fill="#22D3EE" />
+            <path d="M145 295 L160 305" stroke="#000" strokeWidth="1.5" />
+            <path d="M130 310 H175" stroke="#000" strokeWidth="1" strokeOpacity="0.3" />
           </g>
 
-          {/* LEGS */}
-          <g id="legs">
-            <path d="M80 230 L75 295 H105 L110 230 Z" fill="#1F1F1F" stroke="#000" strokeWidth="2" />
-            <path d="M130 230 L135 295 H165 L160 230 Z" fill="#1F1F1F" stroke="#000" strokeWidth="2" />
-            <rect x="73" y="245" width="12" height="15" rx="1" fill="#111" stroke="#000" strokeWidth="1" />
-            <rect x="155" y="245" width="12" height="15" rx="1" fill="#111" stroke="#000" strokeWidth="1" />
+          {/* PANTS - CARGO STRAPS */}
+          <g id="pants">
+            <path d="M75 230 L65 295 H105 L115 230 Z" fill="#262626" stroke="#000" strokeWidth="3" />
+            <path d="M125 230 L135 295 H175 L165 230 Z" fill="#262626" stroke="#000" strokeWidth="3" />
+            {/* Straps */}
+            <path d="M68 250 L102 265" stroke="#000" strokeWidth="1.5" strokeDasharray="4 2" />
+            <path d="M138 250 L172 265" stroke="#000" strokeWidth="1.5" strokeDasharray="4 2" />
+            {/* Pockets */}
+            <rect x="62" y="240" width="15" height="20" rx="2" fill="#1A1A1A" stroke="#000" strokeWidth="1.5" />
+            <rect x="163" y="240" width="15" height="20" rx="2" fill="#1A1A1A" stroke="#000" strokeWidth="1.5" />
           </g>
 
-          {/* BODY - Techwear Jacket with Cyan Accents */}
-          <g id="body">
-            <path d="M65 140 Q120 120 175 140 L190 230 H50 L65 140Z" fill="#1A1A1A" stroke="#000" strokeWidth="3" />
-            <path d="M100 150 V210" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" />
-            <path d="M140 150 V210" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" />
-            <rect x="78" y="160" width="18" height="22" rx="2" fill="#262626" stroke="#000" strokeWidth="1" />
-            <rect x="144" y="160" width="18" height="22" rx="2" fill="#262626" stroke="#000" strokeWidth="1" />
+          {/* JACKET - VEST OVER HOODIE */}
+          <g id="jacket">
+            <path d="M60 140 Q120 110 180 140 L195 230 H45 L60 140Z" fill="#1A1A1A" stroke="#000" strokeWidth="3.5" />
+            {/* Vest Overlap */}
+            <path d="M60 140 L85 140 V230 H60 Z" fill="#262626" stroke="#000" strokeWidth="2" />
+            <path d="M180 140 L155 140 V230 H180 Z" fill="#262626" stroke="#000" strokeWidth="2" />
+            {/* Cyan Zippers/Lines */}
+            <path d="M90 150 V210" stroke="#22D3EE" strokeWidth="3" strokeLinecap="round" />
+            <path d="M150 150 V210" stroke="#22D3EE" strokeWidth="3" strokeLinecap="round" />
+            {/* Chest Pockets with flaps */}
+            <rect x="75" y="160" width="22" height="28" rx="2" fill="#333" stroke="#000" strokeWidth="1.5" />
+            <path d="M75 160 H97 L95 168 H77 Z" fill="#1A1A1A" stroke="#000" strokeWidth="1.5" />
+            <rect x="143" y="160" width="22" height="28" rx="2" fill="#333" stroke="#000" strokeWidth="1.5" />
+            <path d="M143 160 H165 L163 168 H145 Z" fill="#1A1A1A" stroke="#000" strokeWidth="1.5" />
           </g>
 
-          {/* HEAD GROUP */}
+          {/* HEAD GROUP - HIGH DETAIL */}
           <motion.g style={{ x: headX, y: headY, originX: "120px", originY: "110px" }}>
-            <path d="M85 80 Q85 135 120 135 Q155 135 155 80 Q155 40 120 40 Q85 40 85 80Z" fill="#FFD1B3" stroke="#000" strokeWidth="2.5" />
+            {/* Face */}
+            <path d="M80 80 Q80 140 120 140 Q160 140 160 80 Q160 35 120 35 Q80 35 80 80Z" fill="#FFD1B3" stroke="#000" strokeWidth="3" />
             
-            {/* HAIR - Spiky Cyan/Blue */}
-            <path d="M85 60 L70 40 L95 50 L100 10 L120 30 L140 10 L145 50 L170 40 L155 65 Q175 100 155 120 L170 115 L155 130 Q120 135 85 130 L70 115 L85 120 Q65 100 85 60Z" fill="#5EEAD4" stroke="#000" strokeWidth="2.5" />
-            
-            {/* GLASSES - Orange Round */}
-            <circle cx="103" cy="90" r="14" stroke="#F97316" strokeWidth="5" fill="white" fillOpacity="0.1" />
-            <circle cx="137" cy="90" r="14" stroke="#F97316" strokeWidth="5" fill="white" fillOpacity="0.1" />
-            <path d="M117 90 H123" stroke="#F97316" strokeWidth="5" />
+            {/* Spiky Blue Hair - Multi-layered */}
+            <path d="M80 60 L60 40 L95 55 L100 5 L120 35 L140 5 L150 55 L180 40 L160 70 Q180 110 160 130 L180 125 L160 145 Q120 150 80 145 L60 125 L80 130 Q55 110 80 60Z" fill="#5EEAD4" stroke="#000" strokeWidth="3" />
+            <path d="M100 50 L110 30 M130 50 L125 30" stroke="#000" strokeWidth="1" strokeOpacity="0.4" /> {/* Hair detail */}
 
-            {/* EYES */}
+            {/* Glasses - Round Orange */}
+            <circle cx="102" cy="95" r="16" stroke="#F97316" strokeWidth="6" fill="white" fillOpacity="0.1" />
+            <circle cx="138" cy="95" r="16" stroke="#F97316" strokeWidth="6" fill="white" fillOpacity="0.1" />
+            <path d="M118 95 H122" stroke="#F97316" strokeWidth="6" />
+
+            {/* Eyes */}
             <motion.g style={{ x: eyeX, y: eyeY }}>
-              <circle cx="103" cy="90" r="3" fill="#000" />
-              <motion.circle cx="137" cy="90" r="3" fill="#000" animate={{ scaleY: isWinking ? 0.1 : 1 }} />
+              <circle cx="102" cy="95" r="3.5" fill="#000" />
+              <motion.circle cx="138" cy="95" r="3.5" fill="#000" animate={{ scaleY: isWinking ? 0.1 : 1 }} />
             </motion.g>
 
-            {/* MOUTH */}
-            <path d="M115 115 Q120 120 125 115" stroke="#000" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            {/* Mouth */}
+            <path d="M112 120 Q120 125 128 120" stroke="#000" strokeWidth="2" fill="none" strokeLinecap="round" />
           </motion.g>
 
           {/* ARMS & STYLUS */}
-          <path d="M50 180 Q35 200 55 220" stroke="#1A1A1A" strokeWidth="10" strokeLinecap="round" />
-          <motion.g animate={{ rotate: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity }} style={{ originX: "185px", originY: "180px" }}>
-            <path d="M185 180 Q210 200 220 230" stroke="#1A1A1A" strokeWidth="10" strokeLinecap="round" />
-            <rect x="215" y="225" width="14" height="14" rx="3" fill="#FFD1B3" stroke="#000" strokeWidth="1.5" />
+          <path d="M45 180 Q30 205 60 225" stroke="#1A1A1A" strokeWidth="12" strokeLinecap="round" />
+          <motion.g animate={{ rotate: [0, -3, 0] }} transition={{ duration: 3, repeat: Infinity }} style={{ originX: "190px", originY: "185px" }}>
+            <path d="M190 185 Q220 210 230 240" stroke="#1A1A1A" strokeWidth="12" strokeLinecap="round" />
+            <rect x="225" y="235" width="16" height="16" rx="4" fill="#FFD1B3" stroke="#000" strokeWidth="2.5" />
             
-            {/* GLOWING STYLUS */}
-            <motion.g animate={{ rotate: 15 }} style={{ originX: "222px", originY: "233px" }}>
-              <rect x="218" y="180" width="7" height="45" rx="1.5" fill="#FFF" stroke="#000" strokeWidth="1.5" />
-              <rect x="218" y="175" width="7" height="7" rx="1" fill="#22D3EE" />
-              <motion.circle cx="221.5" cy="174" r="7" fill="#22D3EE" animate={{ scale: [1, 2, 1], opacity: [0.3, 0.7, 0.3], filter: ["blur(4px)", "blur(8px)", "blur(4px)"] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            {/* STYLUS - GLOVING */}
+            <motion.g animate={{ rotate: 12 }} style={{ originX: "233px", originY: "243px" }}>
+              <rect x="230" y="180" width="8" height="55" rx="2" fill="#FFF" stroke="#000" strokeWidth="2.5" />
+              <rect x="230" y="175" width="8" height="8" rx="1.5" fill="#22D3EE" />
+              <motion.circle cx="234" cy="173" r="9" fill="#22D3EE" animate={{ scale: [1, 2.5, 1], opacity: [0.3, 0.8, 0.3], filter: ["blur(4px)", "blur(12px)", "blur(4px)"] }} transition={{ duration: 1.5, repeat: Infinity }} />
             </motion.g>
           </motion.g>
         </svg>
 
-        {/* Particles */}
-        {[...Array(4)].map((_, i) => (
-          <motion.div key={i} className="absolute w-1.5 h-1.5 bg-[#22D3EE]" initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0], x: [110, Math.random() * 120 - 60], y: [-80, Math.random() * -140 - 40], scale: [0, 1, 0] }} transition={{ duration: 2 + Math.random(), repeat: Infinity, delay: i * 0.5 }} style={{ right: "12%", top: "45%" }} />
+        {/* Dynamic Particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div key={i} className="absolute w-2 h-2 bg-[#22D3EE]" initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0], x: [120, Math.random() * 160 - 80], y: [-100, Math.random() * -200 - 50], scale: [0, 1.2, 0], rotate: [0, 90, 180] }} transition={{ duration: 2.5 + Math.random() * 2, repeat: Infinity, delay: i * 0.4 }} style={{ right: "8%", top: "45%" }} />
         ))}
       </motion.div>
     </div>
