@@ -52,7 +52,7 @@ function TiltButton({
   const buttonContent = (
     <motion.div
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative px-3 sm:px-6 lg:px-8 py-2 sm:py-3.5 lg:py-4.5 font-bold font-pixel text-[9px] sm:text-xs md:text-sm lg:text-base border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_var(--color-pixel-dark)] sm:shadow-[4px_4px_0px_var(--color-pixel-dark)] lg:shadow-[5px_5px_0px_var(--color-pixel-dark)] transition-all ${
+      className={`relative px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4.5 font-bold font-pixel text-[10px] sm:text-xs md:text-sm lg:text-base border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_var(--color-pixel-dark)] sm:shadow-[4px_4px_0px_var(--color-pixel-dark)] lg:shadow-[5px_5px_0px_var(--color-pixel-dark)] transition-all ${
         primary ? "bg-[var(--color-accent-blue)] text-primary" : "bg-surface text-primary"
       } ${className}`}
     >
@@ -373,7 +373,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
           className="text-secondary font-semibold max-w-lg lg:max-w-xl mx-auto leading-relaxed mb-8 lg:mb-10 px-4"
-          style={{ fontSize: "clamp(0.85rem, 1.2vw, 1.15rem)" }}
+          style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.25rem)" }}
         >
           Designing thoughtful digital experiences through creativity, storytelling, and playful interactions.
         </motion.p>
@@ -387,7 +387,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1 + i * 0.08 }}
               whileHover={{ y: -2, scale: 1.05 }}
-              className="px-3 sm:px-4 py-1.5 md:py-2 text-[8px] sm:text-[9px] md:text-xs font-bold border-2 border-primary rounded-full bg-white/80 backdrop-blur-sm shadow-[2px_2px_0px_var(--color-primary)] cursor-pointer"
+              className="px-3.5 sm:px-4 py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-xs font-bold border-2 border-primary rounded-full bg-white/80 backdrop-blur-sm shadow-[2px_2px_0px_var(--color-primary)] cursor-pointer"
               style={{ borderColor: tag.color }}
             >
               {tag.label}
