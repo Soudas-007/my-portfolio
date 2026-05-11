@@ -3,20 +3,18 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-/* ─── tiny pixel creatures that wander the section ─── */
 function PixelCreature({ emoji, className, seed = 0 }: { emoji: string; className: string; seed?: number }) {
   return (
     <motion.div
       animate={{ y: [0, -8, 0], x: [0, 6, -6, 0] }}
       transition={{ duration: 4 + seed * 0.5, repeat: Infinity, ease: "easeInOut" }}
-      className={`absolute text-2xl pointer-events-none select-none z-0 ${className}`}
+      className={`absolute text-xl sm:text-2xl pointer-events-none select-none z-0 ${className}`}
     >
       {emoji}
     </motion.div>
   );
 }
 
-/* ─── sparkle star ─── */
 function Sparkle({ style, delay }: { style: React.CSSProperties; delay: number }) {
   return (
     <motion.div
@@ -32,43 +30,34 @@ function Sparkle({ style, delay }: { style: React.CSSProperties; delay: number }
   );
 }
 
-/* ─── animated dashed path connector ─── */
 function PathConnector({ flip }: { flip?: boolean }) {
   return (
-    <div className={`relative w-full h-24 flex items-center justify-center pointer-events-none ${flip ? "scale-x-[-1]" : ""}`}>
-      <svg viewBox="0 0 400 80" className="w-80 h-20" fill="none">
+    <div className={`relative w-full h-16 sm:h-24 hidden sm:flex items-center justify-center pointer-events-none ${flip ? "scale-x-[-1]" : ""}`}>
+      <svg viewBox="0 0 400 80" className="w-48 sm:w-80 h-12 sm:h-20" fill="none">
         <motion.path
           d="M10,10 C100,10 100,70 200,70 C300,70 300,10 390,10"
-          stroke="var(--color-primary)"
-          strokeWidth="3"
-          strokeDasharray="8 6"
-          strokeLinecap="round"
+          stroke="var(--color-primary)" strokeWidth="3" strokeDasharray="8 6" strokeLinecap="round"
           initial={{ pathLength: 0, opacity: 0.3 }}
           whileInView={{ pathLength: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
         />
       </svg>
-      {/* Floating arrow */}
       <motion.div
         animate={{ x: [0, 6, 0], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute right-[calc(50%-140px)] top-0 text-lg"
-      >
-        ➤
-      </motion.div>
+      >➤</motion.div>
     </div>
   );
 }
 
-/* ─── data ─── */
 const experiences = [
   {
     role: "UI/UX Design Intern",
     company: "Plum Stays",
     duration: "2025 – Present",
-    description:
-      "Worked on UI/UX design tasks, user-centered interfaces, visual layouts, design systems, and collaborative creative workflows.",
+    description: "Worked on UI/UX design tasks, user-centered interfaces, visual layouts, design systems, and collaborative creative workflows.",
     color: "var(--color-accent-blue)",
     emoji: "🎨",
     themeIcons: ["🖌️", "📐", "🗂️", "📝"],
@@ -84,8 +73,7 @@ const experiences = [
     role: "Creative Coordination & Admin",
     company: "",
     duration: "2024 – 2025",
-    description:
-      "Handled communication, coordination, organization, workflow management, and operational responsibilities while maintaining creative problem-solving approaches.",
+    description: "Handled communication, coordination, organization, workflow management, and operational responsibilities while maintaining creative problem-solving approaches.",
     color: "var(--color-accent-green)",
     emoji: "📋",
     themeIcons: ["📂", "✅", "📎", "🗓️"],
@@ -100,8 +88,7 @@ const experiences = [
     role: "Freelance 3D Designer",
     company: "",
     duration: "2022 – 2024",
-    description:
-      "Worked on freelance 3D visual projects, creative modeling concepts, motion experiments, and digital visual storytelling.",
+    description: "Worked on freelance 3D visual projects, creative modeling concepts, motion experiments, and digital visual storytelling.",
     color: "var(--color-accent-yellow)",
     emoji: "🧊",
     themeIcons: ["🔷", "🔶", "🔻", "⬡"],
@@ -113,10 +100,7 @@ const experiences = [
 ];
 
 export default function ExperienceSection() {
-  /* hydration-safe sparkles */
-  const [sparkles, setSparkles] = useState<
-    { top: string; left: string; delay: number }[]
-  >([]);
+  const [sparkles, setSparkles] = useState<{ top: string; left: string; delay: number }[]>([]);
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -131,53 +115,39 @@ export default function ExperienceSection() {
   }, []);
 
   return (
-    <section className="py-32 px-6 bg-background relative overflow-hidden border-t-4 border-primary">
-      {/* ── sparkles ── */}
+    <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 bg-background relative overflow-hidden border-t-4 border-primary">
       {sparkles.map((s, i) => (
         <Sparkle key={`sparkle-${i}`} style={{ top: s.top, left: s.left }} delay={s.delay} />
       ))}
 
-      {/* ── pixel creatures ── */}
-      <PixelCreature emoji="🐾" className="top-24 left-[8%]" seed={1} />
-      <PixelCreature emoji="🌟" className="top-[45%] right-[6%]" seed={2} />
-      <PixelCreature emoji="🎮" className="bottom-32 left-[12%]" seed={3} />
-      <PixelCreature emoji="🚀" className="bottom-48 right-[10%]" seed={4} />
+      {/* Pixel creatures — only md+ */}
+      <PixelCreature emoji="🐾" className="top-24 left-[8%] hidden md:block" seed={1} />
+      <PixelCreature emoji="🌟" className="top-[45%] right-[6%] hidden md:block" seed={2} />
+      <PixelCreature emoji="🎮" className="bottom-32 left-[12%] hidden lg:block" seed={3} />
+      <PixelCreature emoji="🚀" className="bottom-48 right-[10%] hidden lg:block" seed={4} />
 
-      {/* ── ambient floating particles ── */}
+      {/* Ambient particles */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {[...Array(10)].map((_, i) => (
           <motion.div
             key={`particle-${i}`}
-            animate={{
-              y: [0, -40, 0],
-              x: [0, (i % 2 === 0 ? 15 : -15), 0],
-              opacity: [0.15, 0.45, 0.15],
-            }}
-            transition={{
-              duration: 8 + i * 1.2,
-              repeat: Infinity,
-              delay: i * 0.6,
-            }}
+            animate={{ y: [0, -40, 0], x: [0, (i % 2 === 0 ? 15 : -15), 0], opacity: [0.15, 0.45, 0.15] }}
+            transition={{ duration: 8 + i * 1.2, repeat: Infinity, delay: i * 0.6 }}
             className="absolute w-1.5 h-1.5 bg-primary/20 rounded-full"
-            style={{
-              top: `${10 + i * 8}%`,
-              left: `${5 + i * 9}%`,
-            }}
+            style={{ top: `${10 + i * 8}%`, left: `${5 + i * 9}%` }}
           />
         ))}
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-20"
         >
-          <motion.h2
-            className="font-pixel text-5xl md:text-6xl text-primary mb-4 drop-shadow-[4px_4px_0px_#E0D8C8]"
-          >
+          <motion.h2 className="font-pixel text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary mb-4 drop-shadow-[4px_4px_0px_#E0D8C8]">
             JOURNEY SO FAR
           </motion.h2>
           <motion.p
@@ -185,12 +155,10 @@ export default function ExperienceSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
-            className="text-secondary font-semibold text-lg max-w-lg mx-auto"
+            className="text-secondary font-semibold text-base sm:text-lg max-w-lg mx-auto"
           >
             Creative experiences, collaborations, and digital adventures.
           </motion.p>
-
-          {/* decorative dots under subtitle */}
           <div className="flex justify-center gap-2 mt-6">
             {["var(--color-accent-blue)", "var(--color-accent-yellow)", "var(--color-accent-green)", "var(--color-accent-red)"].map((c, i) => (
               <motion.div
@@ -204,14 +172,12 @@ export default function ExperienceSection() {
           </div>
         </motion.div>
 
-        {/* ─── Adventure Path with Cards ─── */}
+        {/* Adventure Path */}
         <div className="flex flex-col items-center gap-0">
           {experiences.map((exp, index) => (
             <div key={index} className="w-full flex flex-col items-center">
-              {/* Connector from previous card */}
               {index > 0 && <PathConnector flip={index % 2 === 0} />}
 
-              {/* ── Experience Island Card ── */}
               <motion.div
                 initial={{ opacity: 0, y: 40, scale: 0.92 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -229,47 +195,33 @@ export default function ExperienceSection() {
                   group relative w-full max-w-2xl
                   bg-white/50 backdrop-blur-sm
                   border-4 border-primary rounded-2xl
-                  p-8 overflow-hidden cursor-pointer
+                  p-5 sm:p-8 overflow-hidden cursor-pointer
                   shadow-[6px_6px_0px_var(--color-primary)]
                   transition-colors duration-300
-                  ${index % 2 === 0 ? "self-start md:ml-0" : "self-end md:mr-0"}
+                  ${index % 2 === 0 ? "sm:self-start" : "sm:self-end"}
                 `}
                 style={{ transformStyle: "preserve-3d" }}
               >
                 {/* Window Dots */}
-                <div className="absolute top-4 right-4 flex gap-2 z-10">
-                  <div className="w-3 h-3 rounded-full border border-primary bg-[var(--color-accent-red)]" />
-                  <div className="w-3 h-3 rounded-full border border-primary bg-[var(--color-accent-yellow)]" />
-                  <div className="w-3 h-3 rounded-full border border-primary bg-[var(--color-accent-green)]" />
+                <div className="absolute top-3 sm:top-4 right-3 sm:right-4 flex gap-1.5 sm:gap-2 z-10">
+                  <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full border border-primary bg-[var(--color-accent-red)]" />
+                  <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full border border-primary bg-[var(--color-accent-yellow)]" />
+                  <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full border border-primary bg-[var(--color-accent-green)]" />
                 </div>
 
-                {/* Hovering theme icons — float around on hover */}
+                {/* Theme icons on hover */}
                 <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 overflow-hidden">
                   {exp.themeIcons.map((icon, i) => (
                     <motion.div
                       key={i}
-                      animate={{
-                        y: [10, -20, 10],
-                        x: [0, (i % 2 === 0 ? 12 : -12), 0],
-                        rotate: [0, i % 2 === 0 ? 15 : -15, 0],
-                      }}
-                      transition={{
-                        duration: 3 + i * 0.5,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                        ease: "easeInOut",
-                      }}
-                      className="absolute text-3xl"
-                      style={{
-                        top: `${20 + i * 18}%`,
-                        left: `${65 + i * 8}%`,
-                      }}
+                      animate={{ y: [10, -20, 10], x: [0, (i % 2 === 0 ? 12 : -12), 0], rotate: [0, i % 2 === 0 ? 15 : -15, 0] }}
+                      transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
+                      className="absolute text-2xl sm:text-3xl"
+                      style={{ top: `${20 + i * 18}%`, left: `${65 + i * 8}%` }}
                     >
                       {icon}
                     </motion.div>
                   ))}
-
-                  {/* Soft color wash */}
                   <motion.div
                     animate={{ opacity: [0.05, 0.15, 0.05] }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -280,41 +232,31 @@ export default function ExperienceSection() {
 
                 {/* Card Content */}
                 <div className="relative z-10">
-                  {/* Role badge */}
-                  <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-3 mb-3 sm:mb-4">
                     <motion.div
                       animate={{ y: [0, -3, 0], rotate: [0, 5, -5, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                      className="w-14 h-14 flex items-center justify-center border-4 border-primary rounded-xl text-3xl shadow-[3px_3px_0px_var(--color-primary)]"
+                      className="w-11 sm:w-14 h-11 sm:h-14 flex items-center justify-center border-4 border-primary rounded-xl text-2xl sm:text-3xl shadow-[3px_3px_0px_var(--color-primary)] flex-shrink-0"
                       style={{ backgroundColor: exp.color }}
                     >
                       {exp.emoji}
                     </motion.div>
                     <div>
-                      <h3 className="font-pixel text-xl md:text-2xl text-primary leading-tight">
-                        {exp.role}
-                      </h3>
-                      {exp.company && (
-                        <span className="text-sm font-bold text-secondary">@ {exp.company}</span>
-                      )}
+                      <h3 className="font-pixel text-base sm:text-xl md:text-2xl text-primary leading-tight">{exp.role}</h3>
+                      {exp.company && <span className="text-xs sm:text-sm font-bold text-secondary">@ {exp.company}</span>}
                     </div>
                   </div>
 
-                  {/* Duration pill */}
                   <motion.div
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className="inline-block px-4 py-1.5 text-xs font-bold border-2 border-primary rounded-full mb-4 shadow-[2px_2px_0px_var(--color-primary)] bg-surface"
+                    className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 text-xs font-bold border-2 border-primary rounded-full mb-3 sm:mb-4 shadow-[2px_2px_0px_var(--color-primary)] bg-surface"
                   >
                     🗓️ {exp.duration}
                   </motion.div>
 
-                  {/* Description */}
-                  <p className="text-secondary font-semibold text-sm leading-relaxed mb-5">
-                    {exp.description}
-                  </p>
+                  <p className="text-secondary font-semibold text-xs sm:text-sm leading-relaxed mb-4 sm:mb-5">{exp.description}</p>
 
-                  {/* Decorative mini-cards (sticky notes / file tabs) */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {exp.decorItems.map((item, i) => (
                       <motion.div
                         key={i}
@@ -323,7 +265,7 @@ export default function ExperienceSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + i * 0.1 }}
                         whileHover={{ y: -4, rotate: i % 2 === 0 ? 2 : -2, scale: 1.08 }}
-                        className={`px-3 py-1.5 text-xs font-bold border-2 border-primary rounded-lg shadow-[2px_2px_0px_var(--color-primary)] cursor-pointer ${item.bg} backdrop-blur-sm`}
+                        className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-bold border-2 border-primary rounded-lg shadow-[2px_2px_0px_var(--color-primary)] cursor-pointer ${item.bg} backdrop-blur-sm`}
                       >
                         {item.text}
                       </motion.div>
@@ -331,32 +273,20 @@ export default function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Hover glow ring */}
+                {/* Hover glow */}
                 <motion.div
                   className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[-1]"
-                  style={{
-                    boxShadow: `0 0 30px ${exp.color}, 0 0 60px ${exp.color}40`,
-                  }}
+                  style={{ boxShadow: `0 0 30px ${exp.color}, 0 0 60px ${exp.color}40` }}
                 />
 
-                {/* Pixel particle burst on hover */}
+                {/* Particle burst */}
                 {[...Array(4)].map((_, i) => (
                   <motion.div
                     key={`burst-${i}`}
                     className="absolute w-2 h-2 border border-primary rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{ backgroundColor: exp.color }}
-                    animate={{
-                      x: [0, (i % 2 === 0 ? 30 : -30) + i * 5],
-                      y: [0, (i < 2 ? -25 : 25)],
-                      opacity: [0, 0.8, 0],
-                      scale: [0.5, 1, 0],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      delay: i * 0.2,
-                      ease: "easeOut",
-                    }}
+                    animate={{ x: [0, (i % 2 === 0 ? 30 : -30) + i * 5], y: [0, (i < 2 ? -25 : 25)], opacity: [0, 0.8, 0], scale: [0.5, 1, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2, ease: "easeOut" }}
                   />
                 ))}
               </motion.div>
@@ -364,26 +294,24 @@ export default function ExperienceSection() {
           ))}
         </div>
 
-        {/* ─── End-of-journey marker ─── */}
+        {/* End marker */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ type: "spring", bounce: 0.5 }}
-          className="flex flex-col items-center mt-16 gap-3"
+          className="flex flex-col items-center mt-10 sm:mt-16 gap-3"
         >
           <PathConnector />
           <motion.div
             animate={{ y: [0, -6, 0], rotate: [0, 5, -5, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
             whileHover={{ scale: 1.2, rotate: 15 }}
-            className="w-20 h-20 flex items-center justify-center bg-[var(--color-accent-yellow)] border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-primary)] text-4xl cursor-pointer"
+            className="w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center bg-[var(--color-accent-yellow)] border-4 border-primary rounded-2xl shadow-[6px_6px_0px_var(--color-primary)] text-3xl sm:text-4xl cursor-pointer"
           >
             🏁
           </motion.div>
-          <span className="font-pixel text-primary text-lg mt-2">
-            ...and the adventure continues!
-          </span>
+          <span className="font-pixel text-primary text-sm sm:text-lg mt-2 text-center px-4">...and the adventure continues!</span>
         </motion.div>
       </div>
     </section>
