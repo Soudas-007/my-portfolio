@@ -27,15 +27,39 @@
   --font-body: var(--font-inter);
 }
 
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--primary);
   font-family: var(--font-inter), sans-serif;
-  /* Pixel-art inspired styling base */
-  cursor: crosshair; /* Temporary until we add custom cursor */
+  overflow-x: hidden;
+  cursor: auto;
 }
 
-/* Ensure images don't anti-alias if they are pixel art */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+}
+
 .pixelated {
   image-rendering: pixelated;
+}
+
+section {
+  width: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .font-pixel {
+    letter-spacing: -0.01em;
+  }
 }

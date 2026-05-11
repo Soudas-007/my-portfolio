@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${pixelifySans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body bg-background text-primary overflow-x-hidden cursor-none">
+      <body className="min-h-full flex flex-col font-body bg-background text-primary overflow-x-hidden">
         <CustomCursor />
         {children}
       </body>
