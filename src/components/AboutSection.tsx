@@ -5,12 +5,11 @@ import Image from "next/image";
 
 export default function AboutSection() {
   const skills = [
-    { name: "Figma", color: "var(--color-accent-blue)" },
-    { name: "UI Design", color: "var(--color-accent-green)" },
-    { name: "Prototyping", color: "var(--color-accent-yellow)" },
+    { name: "UX Research", color: "var(--color-accent-blue)" },
+    { name: "User Flow", color: "var(--color-accent-green)" },
     { name: "Wireframing", color: "var(--color-accent-red)" },
-    { name: "Aseprite", color: "var(--color-accent-blue)" },
-    { name: "Research", color: "var(--color-accent-green)" }
+    { name: "UI Design", color: "var(--color-accent-blue)" },
+    { name: "Prototyping", color: "var(--color-accent-yellow)" }
   ];
 
   return (

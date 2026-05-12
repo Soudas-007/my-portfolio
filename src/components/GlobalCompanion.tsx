@@ -171,9 +171,9 @@ export default function GlobalCompanion() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -15, scale: 0.7 }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="absolute -top-20 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white border-3 border-primary px-5 py-2.5 rounded-2xl shadow-[5px_5px_0px_var(--color-primary)] z-10"
+                    className="absolute -top-24 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white border-3 border-primary px-6 py-3 rounded-2xl shadow-[6px_6px_0px_var(--color-primary)] z-10"
                   >
-                    <p className="text-[10px] font-bold font-pixel text-primary uppercase tracking-wider">
+                    <p className="text-[11px] sm:text-[13px] md:text-[14px] font-bold font-pixel text-primary uppercase tracking-wider">
                       {sectionConfigs[activeSection].speech}
                     </p>
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-3 border-b-3 border-primary rotate-45" />
