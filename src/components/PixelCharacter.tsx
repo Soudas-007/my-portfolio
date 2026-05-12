@@ -4,7 +4,7 @@ import { motion, useSpring, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
-export default function PixelCharacter() {
+export default function PixelCharacter({ isWaving = false }: { isWaving?: boolean }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isWobbling, setIsWobbling] = useState(false);
   const characterRef = useRef<HTMLDivElement>(null);
@@ -24,17 +24,17 @@ export default function PixelCharacter() {
     
     // Random "wobble" or "lose balance" effect
     const wobbleInterval = setInterval(() => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.8 && !isWaving) {
         setIsWobbling(true);
-        setTimeout(() => setIsWobbling(false), 1000);
+        setTimeout(() => setIsWobbling(false), 1200);
       }
-    }, 5000);
+    }, 6000);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       clearInterval(wobbleInterval);
     };
-  }, []);
+  }, [isWaving]);
 
   const springConfig = { stiffness: 120, damping: 20 };
   const charX = useSpring(mousePos.x * 25, springConfig);
@@ -44,17 +44,21 @@ export default function PixelCharacter() {
     <div ref={characterRef} className="relative w-48 h-56 md:w-56 md:h-64 lg:w-64 lg:h-72 select-none pointer-events-none">
       <motion.div
         style={{ x: charX, y: charY }}
-        animate={isWobbling ? {
-          rotate: [0, -10, 8, -5, 0],
-          scaleY: [1, 0.85, 1.1, 0.95, 1],
+        animate={isWaving ? {
+          rotate: [0, -5, 5, -5, 0],
+          y: [0, -10, 0],
+          scaleY: [1, 1.05, 1],
+        } : isWobbling ? {
+          rotate: [0, -12, 10, -6, 0],
+          scaleY: [1, 0.85, 1.15, 0.9, 1],
         } : {
           y: [0, -12, 0],
           rotate: [-1.5, 1.5, -1.5],
           scaleY: [1, 1.02, 1],
         }}
         transition={{ 
-          duration: isWobbling ? 1 : 5, 
-          repeat: isWobbling ? 0 : Infinity, 
+          duration: isWaving ? 0.8 : isWobbling ? 1.2 : 5, 
+          repeat: isWaving ? Infinity : isWobbling ? 0 : Infinity, 
           ease: "easeInOut" 
         }}
         className="relative w-full h-full flex items-center justify-center drop-shadow-[0_25px_50px_rgba(0,0,0,0.25)]"
@@ -68,9 +72,19 @@ export default function PixelCharacter() {
           priority
         />
         
-        {/* Interaction Sparkles - Cinematic Detail */}
+        {/* Interaction Elements */}
         <AnimatePresence>
-          {isWobbling && (
+          {isWaving && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 50, y: -20 }}
+              exit={{ opacity: 0, scale: 0 }}
+              className="absolute top-0 right-0 text-3xl"
+            >
+              👋
+            </motion.div>
+          )}
+          {isWobbling && !isWaving && (
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}

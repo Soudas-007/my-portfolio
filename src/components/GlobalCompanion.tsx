@@ -15,7 +15,7 @@ interface MascotState {
 }
 
 const sectionConfigs: Record<SectionId, MascotState> = {
-  home: { x: 88, y: 70, scale: 0.42, rotation: 0, speech: "Welcome 👋" },
+  home: { x: 12, y: 70, scale: 0.42, rotation: 0, speech: "Welcome 👋" },
   work: { x: 92, y: 15, scale: 0.35, rotation: -5, speech: "This one was fun ✨" },
   about: { x: 8, y: 45, scale: 0.4, rotation: 5, speech: "Inspecting... 🔍" },
   toolbox: { x: 90, y: 55, scale: 0.38, rotation: -2, speech: "Powering up ⚡" },
@@ -23,7 +23,7 @@ const sectionConfigs: Record<SectionId, MascotState> = {
 };
 
 const mobileOverrides: Partial<Record<SectionId, Partial<MascotState>>> = {
-  home: { x: 50, y: 88, scale: 0.3 },
+  home: { x: 15, y: 88, scale: 0.3 },
   work: { x: 88, y: 8, scale: 0.25 },
   about: { x: 50, y: 92, scale: 0.28 },
   toolbox: { x: 88, y: 12, scale: 0.28 },
@@ -35,10 +35,11 @@ export default function GlobalCompanion() {
   const [showSpeech, setShowSpeech] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isWaving, setIsWaving] = useState(false);
   const scrollY = useMotionValue(0);
 
   // Physics-based motion values
-  const targetX = useMotionValue(88);
+  const targetX = useMotionValue(12);
   const targetY = useMotionValue(70);
   const mascotX = useSpring(targetX, { stiffness: 40, damping: 15, mass: 1.2 });
   const mascotY = useSpring(targetY, { stiffness: 40, damping: 15, mass: 1.2 });
@@ -56,6 +57,12 @@ export default function GlobalCompanion() {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener("resize", checkMobile);
+
+    const handleWave = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      setIsWaving(customEvent.detail);
+    };
+    window.addEventListener("mascot-wave", handleWave as EventListener);
 
     const sections: SectionId[] = ["home", "work", "about", "toolbox", "contact"];
     const observers = sections.map((id) => {
@@ -84,6 +91,7 @@ export default function GlobalCompanion() {
       observers.forEach((o) => o?.disconnect());
       window.removeEventListener("resize", checkMobile);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mascot-wave", handleWave);
     };
   }, [scrollY]);
 
@@ -116,7 +124,7 @@ export default function GlobalCompanion() {
             className="absolute pointer-events-none"
           >
             <div className="relative group flex flex-col items-center">
-              <PixelCharacter />
+              <PixelCharacter isWaving={isWaving} />
 
               {/* Contextual Speech Bubble */}
               <AnimatePresence>

@@ -186,7 +186,7 @@ export default function HeroSection() {
         
         {/* Title with enhanced pop-out interaction */}
         <div className="mb-6 lg:mb-8 pointer-events-auto w-full max-w-[100vw] overflow-hidden px-2">
-          <h1 className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] text-fluid-h1 transition-all duration-300">
+          <h1 className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] transition-all duration-300" style={{ fontSize: "calc(clamp(2.2rem, 5vw + 2vh, 6.5rem) - 4px)" }}>
             {titleText.split("").map((letter, i) => (
               <motion.span
                 key={i}
@@ -217,7 +217,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
           className="text-secondary font-semibold max-w-lg lg:max-w-xl mx-auto leading-relaxed mb-10 lg:mb-16 px-4"
-          style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.25rem)" }}
+          style={{ fontSize: "calc(clamp(0.95rem, 1.3vw, 1.25rem) - 4px)" }}
         >
           Designing thoughtful digital experiences through creativity, storytelling, and playful interactions.
         </motion.p>

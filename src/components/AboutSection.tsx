@@ -18,12 +18,16 @@ export default function AboutSection() {
       <div className="absolute inset-0 z-[-1] bg-background" />
       <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center z-10 relative">
         {/* Left: Desk Visual - Smaller scale */}
-        <div className="w-full lg:w-1/2 relative h-[200px] sm:h-[300px] flex items-center justify-center">
+        <div 
+          className="w-full lg:w-1/2 relative h-[200px] sm:h-[300px] flex items-center justify-center cursor-pointer"
+          onMouseEnter={() => window.dispatchEvent(new CustomEvent("mascot-wave", { detail: true }))}
+          onMouseLeave={() => window.dispatchEvent(new CustomEvent("mascot-wave", { detail: false }))}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative z-20 w-44 sm:w-60 md:w-64 lg:w-[320px] h-32 sm:h-44 md:h-48 lg:h-[220px] bg-surface border-3 border-primary rounded-xl shadow-[5px_5px_0px_var(--color-primary)] flex flex-col p-1"
+            className="relative z-20 w-44 sm:w-60 md:w-64 lg:w-[320px] h-32 sm:h-44 md:h-48 lg:h-[220px] bg-surface border-3 border-primary rounded-xl shadow-[5px_5px_0px_var(--color-primary)] flex flex-col p-1 transition-all hover:translate-y-[-4px] hover:shadow-[10px_10px_0px_var(--color-primary)]"
           >
             <div className="w-full h-full bg-[#1A1A1A] rounded-lg border-2 border-primary overflow-hidden relative">
               <div className="absolute top-0 left-0 w-full h-3 bg-[#2a2a2a] flex gap-1 items-center px-1.5 z-10">
@@ -42,7 +46,7 @@ export default function AboutSection() {
 
         {/* Right: Content */}
         <div className="w-full lg:w-1/2 text-center lg:text-left">
-          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-3">THE DESIGNER</motion.h2>
+          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-3">About me</motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
             className="text-secondary font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed mb-5">
             I&apos;m a UI/UX Designer who believes digital products shouldn&apos;t just be usable—they should be memorable. By blending modern product design with playful aesthetics.

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SiFigma, SiNotion, SiBlender } from "react-icons/si";
+import { SiFigma, SiNotion, SiMiro } from "react-icons/si";
 import { DiPhotoshop, DiIllustrator } from "react-icons/di";
 
 const tools = [
@@ -9,7 +9,7 @@ const tools = [
   { name: "Photoshop", icon: DiPhotoshop, desc: "Visual Design", color: "text-[#31A8FF]", bg: "hover:bg-[#31A8FF]/5" },
   { name: "Illustrator", icon: DiIllustrator, desc: "Vector Design", color: "text-[#FF9A00]", bg: "hover:bg-[#FF9A00]/5" },
   { name: "Notion", icon: SiNotion, desc: "Documentation", color: "text-primary", bg: "hover:bg-primary/5" },
-  { name: "Blender", icon: SiBlender, desc: "3D Visuals", color: "text-[#EA7711]", bg: "hover:bg-[#EA7711]/5" },
+  { name: "Miro", icon: SiMiro, desc: "Whiteboarding", color: "text-[#FFD02F]", bg: "hover:bg-[#FFD02F]/5" },
 ];
 
 export default function ToolboxSection() {

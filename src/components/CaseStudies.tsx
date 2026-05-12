@@ -1,92 +1,145 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import Image from "next/image";
 
 const projects = [
   {
-    id: "clev-flow",
-    title: "ClevFlow",
-    tagline: "Fintech Dashboard",
-    description: "Designing a seamless experience for modern asset management and crypto tracking.",
-    color: "var(--color-accent-blue)",
-    icon: "💳",
-    stats: ["98% Score", "Real-time"]
+    id: "curiva",
+    title: "CURIVA",
+    subheading: "Telemedicine & Healthcare App",
+    headline: "Curiva — User-Centered Healthcare Platform.",
+    description: "Architected an end-to-end telemedicine solution focused on optimizing doctor discovery and remote consultations. Conducted extensive UX research and wireframing to create intuitive flows that reduce friction in the patient booking experience.",
+    techStack: ["Figma", "UX Research", "Wireframing", "User Flows"],
+    image: "/curiva.png",
+    link: "https://www.behance.net/gallery/246346637/Curiva-Healthcare-App-UIUX-Case-Study",
+    color: "var(--color-accent-blue)"
   },
   {
-    id: "travel-app",
-    title: "Travel-U",
-    tagline: "Leisure Booking",
-    description: "A playful interface for discovering hidden gems and local travel experiences.",
-    color: "var(--color-accent-green)",
-    icon: "✈️",
-    stats: ["Mobile-first", "Social"]
+    id: "travelkit",
+    title: "TRAVELKIT",
+    subheading: "Website Landing Page",
+    headline: "Travelkit — Conversion-Optimized Travel Planning.",
+    description: "Designed a high-conversion landing page featuring smart trip-planning tools and interactive components. Focused on blending storytelling with functional design to drive user engagement through interactive prototypes.",
+    techStack: ["Figma", "Adobe Photoshop", "UI Design", "Prototyping"],
+    image: "/travelkit.png",
+    link: "https://www.behance.net/gallery/241336681/TravelKit-Website-Landing-Page",
+    color: "var(--color-accent-yellow)"
   },
   {
-    id: "next-bank",
-    title: "NextBank",
-    tagline: "Digital Banking",
-    description: "Reimagining the traditional banking app with a focus on visual storytelling.",
-    color: "var(--color-accent-yellow)",
-    icon: "🏦",
-    stats: ["Fast UI", "High Trust"]
-  },
+    id: "nexbank",
+    title: "NEXBANK",
+    subheading: "Mobile Banking App",
+    headline: "NexBank — Streamlined Digital Banking Ecosystem.",
+    description: "Engineered a low-cognitive-load mobile banking interface focused on intuitive financial user journeys. Developed streamlined navigation patterns and a clean UI to simplify complex transactions.",
+    techStack: ["Figma", "UI Design", "User Flows", "Prototyping"],
+    image: "/nexbank.png",
+    link: "https://www.behance.net/gallery/241059653/NexBank-A-Mobile-Banking-App-UXUI-Case-Study",
+    color: "var(--color-accent-green)"
+  }
 ];
 
 function ProjectCard({ project, index }: { project: typeof projects[0], index: number }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+    <motion.a
+      href={project.link}
+      target="_blank"
+      initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-white/60 backdrop-blur-md border-2 sm:border-3 border-primary rounded-xl sm:rounded-2xl p-1 flex flex-col overflow-hidden shadow-[4px_4px_0px_var(--color-primary)] sm:shadow-[6px_6px_0px_var(--color-primary)] transition-all hover:shadow-[8px_8px_0px_var(--color-primary)]"
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group relative flex flex-col md:flex-row items-stretch bg-white border-3 border-primary rounded-[20px] overflow-hidden shadow-[8px_8px_0px_var(--color-pixel-dark)] hover:shadow-[12px_12px_0px_var(--color-pixel-dark)] transition-all cursor-pointer mb-12"
     >
-      <div className="relative aspect-[4/3] sm:aspect-auto sm:h-[180px] md:h-[200px] lg:h-[220px] bg-surface rounded-[10px] sm:rounded-[18px] overflow-hidden border border-primary/10">
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white to-background/50">
-          <motion.div animate={{ scale: isHovered ? 1.1 : 1 }} className="text-3xl sm:text-4xl md:text-5xl">{project.icon}</motion.div>
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(var(--color-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary) 1px, transparent 1px)", backgroundSize: "15px 15px" }} />
+      {/* Left: Illustration Hook */}
+      <div className="relative w-full md:w-2/5 min-h-[250px] md:min-h-full bg-surface border-b-3 md:border-b-0 md:border-r-3 border-primary overflow-hidden">
+        <div className="absolute inset-0 p-6 flex items-center justify-center">
+          <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+            <Image 
+              src={project.image} 
+              alt={project.title} 
+              fill 
+              className="object-contain drop-shadow-[10px_10px_0px_rgba(0,0,0,0.1)]"
+            />
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: isHovered ? 1 : 0 }} className="absolute inset-0 bg-primary/80 backdrop-blur-sm p-4 flex flex-col justify-center items-center text-center text-white">
-          <p className="text-[10px] font-semibold mb-3 leading-relaxed max-w-[160px]">{project.description}</p>
-          <button className="px-3 py-1 bg-white text-primary font-pixel text-[8px] rounded-full border-2 border-primary shadow-[2px_2px_0px_var(--color-primary)] font-bold">VIEW WORK</button>
-        </motion.div>
-        <div className="absolute top-2 left-2 flex gap-1">
-          {project.stats.map((stat, i) => (
-             <span key={i} className="px-1.5 py-0.5 bg-white border-2 border-primary rounded-full text-[6px] font-bold shadow-[1.5px_1.5px_0px_var(--color-primary)]">{stat}</span>
+        {/* Decorative corner tag */}
+        <div className="absolute top-4 left-4 px-3 py-1 bg-white border-2 border-primary rounded-full text-[10px] font-bold shadow-[3px_3px_0px_var(--color-primary)] z-10">
+          CASE STUDY
+        </div>
+      </div>
+
+      {/* Right: Details */}
+      <div className="flex-1 p-6 md:p-10 flex flex-col justify-center bg-white relative">
+        <div className="mb-4">
+          <span className="font-pixel text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest block mb-1">
+            {project.subheading}
+          </span>
+          <h3 className="font-pixel text-2xl md:text-3xl font-bold text-primary mb-3">
+            {project.headline}
+          </h3>
+          <p className="text-secondary font-medium text-sm md:text-base leading-relaxed mb-6">
+            {project.description}
+          </p>
+        </div>
+
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {project.techStack.map((tech) => (
+            <span 
+              key={tech} 
+              className="px-3 py-1 bg-primary text-white text-[10px] md:text-xs font-bold rounded-full tracking-wide uppercase"
+            >
+              {tech}
+            </span>
           ))}
         </div>
-      </div>
-      <div className="p-3 flex flex-col">
-        <div className="flex justify-between items-center mb-1">
-          <h3 className="font-pixel text-[10px] sm:text-xs font-bold text-primary truncate uppercase">{project.title}</h3>
-          <span className="text-[7px] px-1.5 py-0.5 rounded-full border-2 border-primary font-bold shadow-[1.5px_1.5px_0px_var(--color-primary)]" style={{ backgroundColor: project.color }}>UI</span>
+
+        {/* View on Behance Link/Icon */}
+        <div className="flex items-center gap-3 text-primary font-pixel text-xs md:text-sm font-bold group/link">
+          <div className="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center bg-[var(--color-accent-blue)]/20 group-hover/link:bg-[var(--color-accent-blue)] transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </div>
+          VIEW FULL CASE STUDY ON BEHANCE
         </div>
-        <p className="text-secondary font-bold text-[8px] sm:text-[9px] tracking-tight">{project.tagline}</p>
       </div>
-      <div className="mt-auto border-t-2 border-primary/5 p-1.5 flex justify-between items-center bg-white/30">
-        <div className="flex -space-x-1">{[1,2].map(i => <div key={i} className="w-3 h-3 rounded-full border border-primary bg-background" />)}</div>
-        <motion.div animate={{ x: isHovered ? 2 : 0 }} className="text-primary font-pixel text-[8px] font-bold flex items-center gap-1 cursor-pointer">GO <span className="text-[10px]">→</span></motion.div>
-      </div>
-    </motion.div>
+    </motion.a>
   );
 }
 
 export default function CaseStudies() {
   return (
-    <section id="work" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative overflow-hidden">
-      <div className="absolute inset-0 z-[-1] bg-background" />
+    <section id="work" className="py-20 md:py-32 px-4 sm:px-6 relative bg-background overflow-hidden">
       <div className="w-full max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-8 sm:mb-12">
-          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-2">FEATURED WORK</motion.h2>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-secondary font-semibold text-[10px] sm:text-xs max-w-lg mx-auto">A selection of projects where logic meets emotion.</motion.p>
+        <div className="text-center mb-16 md:mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-pixel text-4xl md:text-6xl text-primary mb-4"
+          >
+            PROJECTS
+          </motion.h2>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: "100px" }}
+            viewport={{ once: true }}
+            className="h-1.5 bg-primary mx-auto mb-6 rounded-full"
+          />
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-secondary font-bold text-sm md:text-lg max-w-2xl mx-auto uppercase tracking-wider"
+          >
+            Selected digital works focusing on User Experience and Visual Storytelling.
+          </motion.p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8 w-full">
-          {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
+
+        <div className="flex flex-col gap-8 md:gap-16">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
         </div>
       </div>
     </section>
