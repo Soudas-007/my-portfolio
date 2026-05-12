@@ -57,6 +57,18 @@ export default function FooterSection() {
           </motion.a>
         </div>
 
+        {/* Explicit Email Text */}
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          whileInView={{ opacity: 1 }} 
+          viewport={{ once: true }}
+          className="mb-12"
+        >
+          <a href="mailto:sursoudas@gmail.com" className="text-white font-medium text-sm md:text-base hover:text-[var(--color-accent-yellow)] transition-colors">
+            Email me : sursoudas@gmail.com
+          </a>
+        </motion.div>
+
         <div className="w-full pt-10 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest font-pixel">© 2025 SOUDAS SUR</p>
           <div className="flex gap-4">
