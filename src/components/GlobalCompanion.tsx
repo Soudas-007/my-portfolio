@@ -15,7 +15,7 @@ interface MascotState {
 }
 
 const sectionConfigs: Record<SectionId, MascotState> = {
-  home: { x: 27, y: 32, scale: 0.45, rotation: 0, speech: "Hey! 👋" },
+  home: { x: 18, y: 32, scale: 0.45, rotation: 0, speech: "Hey! 👋" },
   work: { x: 92, y: 15, scale: 0.35, rotation: -5, speech: "This one was fun ✨" },
   "exp-card-1": { x: 82, y: 35, scale: 0.32, rotation: 5, speech: "Intern life! 🖥️" },
   "exp-card-2": { x: 18, y: 50, scale: 0.32, rotation: -5, speech: "Organizing... 📁" },
@@ -49,7 +49,7 @@ export default function GlobalCompanion() {
   const scrollY = useMotionValue(0);
 
   // Physics-based motion values
-  const targetX = useMotionValue(27);
+  const targetX = useMotionValue(18);
   const targetY = useMotionValue(32);
   const mascotX = useSpring(targetX, { stiffness: 40, damping: 15, mass: 1.2 });
   const mascotY = useSpring(targetY, { stiffness: 40, damping: 15, mass: 1.2 });
