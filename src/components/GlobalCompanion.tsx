@@ -16,48 +16,48 @@ interface MascotState {
 
 const sectionConfigs: Record<SectionId, MascotState> = {
   home: {
-    x: "85%",
-    y: "65%",
-    scale: 0.7,
+    x: "88%",
+    y: "70%",
+    scale: 0.45,
     rotation: 0,
     speech: "Welcome 👋",
   },
   work: {
-    x: "90%",
-    y: "20%",
-    scale: 0.55,
+    x: "92%",
+    y: "15%",
+    scale: 0.35,
     rotation: -5,
     speech: "This one was fun ✨",
   },
   about: {
-    x: "10%",
-    y: "40%",
-    scale: 0.65,
+    x: "8%",
+    y: "45%",
+    scale: 0.4,
     rotation: 5,
     speech: "Inspecting... 🔍",
   },
   toolbox: {
-    x: "88%",
-    y: "50%",
-    scale: 0.6,
+    x: "90%",
+    y: "55%",
+    scale: 0.38,
     rotation: -2,
     speech: "Powering up ⚡",
   },
   contact: {
-    x: "75%",
-    y: "75%",
-    scale: 0.75,
+    x: "80%",
+    y: "80%",
+    scale: 0.48,
     rotation: 0,
     speech: "Let's magic! 🚀",
   },
 };
 
 const mobileOverrides: Partial<Record<SectionId, Partial<MascotState>>> = {
-  home: { x: "50%", y: "85%", scale: 0.5 },
-  work: { x: "85%", y: "5%", scale: 0.4 },
-  about: { x: "50%", y: "90%", scale: 0.45 },
-  toolbox: { x: "85%", y: "10%", scale: 0.45 },
-  contact: { x: "50%", y: "85%", scale: 0.55 },
+  home: { x: "50%", y: "88%", scale: 0.3 },
+  work: { x: "88%", y: "8%", scale: 0.25 },
+  about: { x: "50%", y: "92%", scale: 0.28 },
+  toolbox: { x: "88%", y: "12%", scale: 0.28 },
+  contact: { x: "50%", y: "88%", scale: 0.35 },
 };
 
 export default function GlobalCompanion() {
