@@ -57,13 +57,16 @@ export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
     setStatus("loading");
 
     try {
-      // Connect to Formspree for reliable delivery to sursoudas@gmail.com
-      const response = await fetch("https://formspree.io/f/xpwzyqjr", {
+      // Switching to FormSubmit.co for a more direct connection to sursoudas@gmail.com
+      // The first time you submit, you will receive a confirmation email to activate the form.
+      const response = await fetch("https://formsubmit.co/ajax/sursoudas@gmail.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
           _subject: `Portfolio: ${formData.subject || "New Message"} from ${formData.name}`,
+          _template: "table",
+          _honey: formData._gotcha, // Honeypot field
         }),
       });
 
