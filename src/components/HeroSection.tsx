@@ -186,7 +186,7 @@ export default function HeroSection() {
         
         {/* Title with enhanced pop-out interaction */}
         <div className="mb-6 lg:mb-8 pointer-events-auto w-full max-w-[100vw] overflow-hidden px-2">
-          <h1 className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] transition-all duration-300" style={{ fontSize: "calc(clamp(2.2rem, 5vw + 2vh, 6.5rem) - 4px)" }}>
+          <h1 id="hero-title" className="font-pixel font-bold text-primary flex flex-wrap justify-center leading-[1.05] transition-all duration-300" style={{ fontSize: "calc(clamp(2.2rem, 5vw + 2vh, 6.5rem) - 4px)" }}>
             {titleText.split("").map((letter, i) => (
               <motion.span
                 key={i}

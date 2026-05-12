@@ -111,14 +111,37 @@ export default function GlobalCompanion() {
 
   // Update target positions with physics
   useEffect(() => {
-    const baseConfig = sectionConfigs[activeSection];
-    const override = isMobile ? mobileOverrides[activeSection] : {};
-    const config = { ...baseConfig, ...override };
+    const updatePosition = () => {
+      const baseConfig = sectionConfigs[activeSection];
+      const override = isMobile ? mobileOverrides[activeSection] : {};
+      const config = { ...baseConfig, ...override };
 
-    targetX.set(config.x);
-    targetY.set(config.y);
-    mascotScale.set(config.scale);
-    mascotRotate.set(config.rotation);
+      const targetXValRaw = config.x;
+      const targetYVal = config.y;
+      let targetXVal = targetXValRaw;
+
+      // Special case for Hero section: exact 100px gap from name
+      if (activeSection === "home" && !isMobile) {
+        const titleEl = document.getElementById("hero-title");
+        if (titleEl) {
+          const rect = titleEl.getBoundingClientRect();
+          // Mascot should be 100px to the left of the title's left edge
+          // Mascot center is what we control, so account for half width (approx 32px scaled)
+          const mascotCenterPixel = rect.left - 100 - 32;
+          targetXVal = (mascotCenterPixel / window.innerWidth) * 100;
+        }
+      }
+
+      targetX.set(targetXVal);
+      targetY.set(targetYVal);
+      mascotScale.set(config.scale);
+      mascotRotate.set(config.rotation);
+    };
+
+    updatePosition();
+    // Re-calculate on resize to maintain the 100px gap
+    window.addEventListener("resize", updatePosition);
+    return () => window.removeEventListener("resize", updatePosition);
   }, [activeSection, isMobile, targetX, targetY, mascotScale, mascotRotate]);
 
   return (
