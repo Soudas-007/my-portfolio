@@ -14,101 +14,47 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-fluid-section px-6 relative overflow-hidden bg-background">
-      {/* Decorative Atmosphere */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-surface/20 -skew-x-12 translate-x-1/2 pointer-events-none" />
-      
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10">
-        
-        {/* Left: Manifesto Content (7 cols) */}
-        <div className="lg:col-span-7 order-2 lg:order-1">
+    <section id="about" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative overflow-hidden">
+      <div className="absolute inset-0 z-[-1] bg-background" />
+      <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center z-10 relative">
+        {/* Left: Desk Visual - Smaller scale */}
+        <div className="w-full lg:w-1/2 relative h-[200px] sm:h-[300px] flex items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="relative z-20 w-44 sm:w-60 md:w-64 lg:w-[320px] h-32 sm:h-44 md:h-48 lg:h-[220px] bg-surface border-3 border-primary rounded-xl shadow-[5px_5px_0px_var(--color-primary)] flex flex-col p-1"
           >
-            <div>
-              <span className="text-[10px] font-bold text-accent-blue uppercase tracking-[0.4em] mb-4 block">Manifesto</span>
-              <h2 className="font-pixel text-fluid-h1 text-primary leading-tight">
-                MEMORABLE BY <br/> DESIGN.
-              </h2>
-            </div>
-
-            <p className="text-secondary font-semibold text-fluid-body leading-relaxed max-w-2xl">
-              I&apos;m a UI/UX Designer who believes digital products shouldn&apos;t just be usable—they should be memorable. By blending modern product logic with playful, handcrafted aesthetics, I build experiences that bridge the gap between utility and emotion.
-            </p>
-
-            <div className="pt-4">
-              <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest mb-6 opacity-40">Core Stack & Expertise</h4>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill, i) => (
-                  <motion.div 
-                    key={i} 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    whileHover={{ y: -3, scale: 1.05 }} 
-                    className="px-5 py-2 bg-white border-3 border-primary rounded-2xl font-bold text-primary text-xs shadow-[4px_4px_0px_var(--color-primary)] cursor-default"
-                  >
-                    {skill.name}
-                  </motion.div>
-                ))}
+            <div className="w-full h-full bg-[#1A1A1A] rounded-lg border-2 border-primary overflow-hidden relative">
+              <div className="absolute top-0 left-0 w-full h-3 bg-[#2a2a2a] flex gap-1 items-center px-1.5 z-10">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-400" /><div className="w-1.5 h-1.5 rounded-full bg-yellow-400" /><div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+              </div>
+              <div className="absolute inset-0 mt-3 flex items-center justify-center">
+                <Image src="/designer.png" alt="Designer" fill className="object-contain p-2 pixelated" priority />
               </div>
             </div>
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-8 h-4 bg-surface border-x-2 border-primary z-0" />
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-16 h-2.5 bg-surface border-2 border-primary rounded-t-lg z-10" />
           </motion.div>
+          {/* Smaller accessories */}
+          <div className="absolute bottom-6 right-2 sm:right-10 w-5 sm:w-8 h-6 sm:h-10 bg-[var(--color-accent-red)] border-2 border-primary rounded-b-lg z-30" />
         </div>
 
-        {/* Right: Desk Visual (5 cols) */}
-        <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ rotate: 1 }}
-            className="relative w-full max-w-[400px] aspect-[4/3] bg-surface border-4 border-primary rounded-[2.5rem] shadow-[15px_15px_0px_var(--color-primary)] p-2 flex flex-col group"
-          >
-            <div className="w-full h-full bg-[#121212] rounded-[1.8rem] border-3 border-primary overflow-hidden relative">
-              {/* Window Header */}
-              <div className="absolute top-0 left-0 w-full h-6 bg-primary/10 flex gap-1.5 items-center px-4 z-10 border-b-2 border-primary/20">
-                <div className="w-2 h-2 rounded-full bg-accent-red border border-primary/20" />
-                <div className="w-2 h-2 rounded-full bg-accent-yellow border border-primary/20" />
-                <div className="w-2 h-2 rounded-full bg-accent-green border border-primary/20" />
-              </div>
-              
-              {/* Visual Content */}
-              <div className="absolute inset-0 mt-6 flex items-center justify-center p-6">
-                <div className="relative w-full h-full">
-                  <Image 
-                    src="/designer.png" 
-                    alt="Designer at Work" 
-                    fill 
-                    className="object-contain pixelated transition-transform duration-700 group-hover:scale-110" 
-                    priority 
-                  />
-                </div>
-              </div>
-
-              {/* Interaction Overlay */}
-              <div className="absolute inset-0 bg-accent-blue/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-            </div>
-
-            {/* Monitor Stand Logic */}
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-16 h-8 bg-surface border-x-4 border-primary z-0" />
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-32 h-4 bg-surface border-4 border-primary rounded-t-2xl z-10" />
-            
-            {/* Ambient Accessories */}
-            <motion.div 
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-4 -right-4 w-12 h-16 bg-accent-red border-4 border-primary rounded-xl shadow-[4px_4px_0px_var(--color-primary)] z-30 flex items-center justify-center"
-            >
-              <span className="text-lg">☕</span>
-            </motion.div>
-          </motion.div>
+        {/* Right: Content */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left">
+          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-3">THE DESIGNER</motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+            className="text-secondary font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed mb-5">
+            I&apos;m a UI/UX Designer who believes digital products shouldn&apos;t just be usable—they should be memorable. By blending modern product design with playful aesthetics.
+          </motion.p>
+          <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+            {skills.map((skill, i) => (
+              <motion.div key={i} whileHover={{ y: -1 }} className="px-2 py-1 bg-white border-2 border-primary rounded-full font-bold text-primary text-[8px] sm:text-[10px] shadow-[2px_2px_0px_var(--color-primary)]">
+                {skill.name}
+              </motion.div>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );

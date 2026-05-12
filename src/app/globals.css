@@ -1,27 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Refined Color Palette - Premium Warm Tones */
   --background: #F6F1E8;
   --surface: #FFF9F0;
   --primary: #3D3B40;
-  --secondary: #5F6368; /* Slightly more professional gray */
+  --secondary: #6B7280;
   --accent-blue: #6CC6FF;
   --accent-yellow: #FFD166;
   --accent-green: #7ED957;
   --accent-red: #FF6B6B;
   --pixel-dark: #2C2C2C;
-  
-  /* Fluid Typography Scale */
-  --text-h1: clamp(2.5rem, 7vw, 5.5rem);
-  --text-h2: clamp(1.8rem, 4.5vw, 3rem);
-  --text-body: clamp(0.95rem, 0.8vw + 0.2vh, 1.15rem);
-  --text-small: clamp(0.7rem, 0.6vw, 0.9rem);
-  
-  /* Fluid Spacing Scale */
-  --space-section: clamp(5rem, 12vw, 14rem);
-  --space-content: clamp(2.5rem, 6vw, 8rem);
-  --space-element: clamp(1.25rem, 3vw, 4rem);
 }
 
 @theme inline {
@@ -42,8 +30,6 @@
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -51,56 +37,59 @@ body {
   color: var(--primary);
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
-  line-height: 1.6;
+  /* Custom cursor only on pointer devices */
+  cursor: auto;
 }
 
-/* Custom cursor only on pointer devices */
+/* Apply crosshair only on devices that support hover (non-touch) */
 @media (hover: hover) and (pointer: fine) {
   body {
     cursor: none;
   }
 }
 
-/* Typography Utilities */
-.text-fluid-h1 { font-size: var(--text-h1); line-height: 1.1; letter-spacing: -0.02em; }
-.text-fluid-h2 { font-size: var(--text-h2); line-height: 1.2; letter-spacing: -0.01em; }
-.text-fluid-body { font-size: var(--text-body); }
-.text-fluid-small { font-size: var(--text-small); }
-
-/* Spacing Utilities */
-.py-fluid-section { padding-top: var(--space-section); padding-bottom: var(--space-section); }
-.py-fluid-content { padding-top: var(--space-content); padding-bottom: var(--space-content); }
-.mb-fluid-element { margin-bottom: var(--space-element); }
-
-/* Pixel-art rendering */
-.pixelated { image-rendering: pixelated; }
-
-/* Premium Border Style */
-.border-premium {
-  border: 3px solid var(--primary);
-  box-shadow: 4px 4px 0px var(--primary);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+/* Pixel-art image rendering */
+.pixelated {
+  image-rendering: pixelated;
 }
 
-.border-premium:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px var(--primary);
+/* Smooth section transitions */
+section {
+  width: 100%;
 }
 
-/* Scrollbar Style */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border: 2px solid var(--background);
-  border-radius: 5px;
+/* Better tap highlighting on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Prevent horizontal scroll */
+/* Fluid typography helpers */
+@layer utilities {
+  .text-fluid-h1 {
+    /* More conservative scaling for laptops to prevent overlap */
+    font-size: clamp(2.2rem, 5vw + 2vh, 6.5rem);
+  }
+  .text-fluid-h2 {
+    font-size: clamp(1.6rem, 3.5vw + 1.5vh, 3.5rem);
+  }
+  .text-fluid-p {
+    font-size: clamp(0.9rem, 0.8vw + 0.4vh, 1.15rem);
+  }
+}
+
+/* Fluid Spacing */
+:root {
+  --fluid-space-20: clamp(2.5rem, 7vw, 8rem);
+  --fluid-space-10: clamp(1.25rem, 3.5vw, 4rem);
+}
+
+@media (max-width: 768px) {
+  .font-pixel {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Prevent horizontal scroll - Hardened */
 html, body {
   width: 100%;
   max-width: 100%;
@@ -108,9 +97,9 @@ html, body {
   padding: 0;
   overflow-x: hidden;
   position: relative;
+  -webkit-text-size-adjust: 100%;
 }
 
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }

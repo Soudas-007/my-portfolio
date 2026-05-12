@@ -3,131 +3,37 @@
 import { motion } from "framer-motion";
 
 const experiences = [
-  { 
-    id: 1, 
-    role: "UI/UX Design Intern", 
-    company: "Stark Design Lab", 
-    period: "2023 - Pres.", 
-    desc: "Leading the design for a series of Web3 dashboards, focusing on data visualization and complex user flows.", 
-    color: "var(--color-accent-blue)", 
-    tags: ["Figma", "Web3", "Dashboards"], 
-    icon: "🔬" 
-  },
-  { 
-    id: 2, 
-    role: "Freelance Designer", 
-    company: "Various Clients", 
-    period: "2022 - 2023", 
-    desc: "Crafted visual identities, motion graphics, and high-converting landing pages for emerging startups.", 
-    color: "var(--color-accent-yellow)", 
-    tags: ["Branding", "AI", "Motion"], 
-    icon: "🎨" 
-  },
-  { 
-    id: 3, 
-    role: "Product Designer", 
-    company: "Innovate Hub", 
-    period: "2021 - 2022", 
-    desc: "Built internal tools and design systems to streamline cross-functional collaboration and prototyping.", 
-    color: "var(--color-accent-green)", 
-    tags: ["SaaS", "Systems"], 
-    icon: "🏗️" 
-  }
+  { id: 1, role: "UI/UX Design Intern", company: "Stark Design Lab", period: "2023 - Pres.", desc: "Leading the design for a series of Web3 dashboards.", color: "var(--color-accent-blue)", tags: ["Figma", "Web3"], icon: "🔬" },
+  { id: 2, role: "Freelance Designer", company: "Various Clients", period: "2022 - 2023", desc: "Crafted visual identities and landing pages.", color: "var(--color-accent-yellow)", tags: ["Branding", "AI"], icon: "🎨" },
+  { id: 3, role: "Product Designer", company: "Innovate Hub", period: "2021 - 2022", desc: "Built internal tools for data visualization.", color: "var(--color-accent-green)", tags: ["Product", "SaaS"], icon: "🏗️" }
 ];
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="py-fluid-section px-6 relative overflow-hidden bg-surface/30">
-      {/* Handcrafted Detail - Drawn Path */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
-        <svg className="w-full h-full">
-          <motion.path
-            d="M50% 0 L50% 100%"
-            stroke="var(--color-primary)"
-            strokeWidth="40"
-            strokeDasharray="100 100"
-            fill="none"
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            transition={{ duration: 2 }}
-          />
-        </svg>
-      </div>
-
-      <div className="w-full max-w-5xl mx-auto relative z-10">
-        <div className="text-center mb-16 sm:mb-24">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-pixel text-fluid-h1 text-primary mb-4"
-          >
-            JOURNEY
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-secondary font-bold text-fluid-body uppercase tracking-widest"
-          >
-            Milestones & Collaborations
-          </motion.p>
+    <section id="experience" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-[#FDFBF7] relative overflow-hidden">
+      <div className="w-full max-w-4xl mx-auto relative z-10">
+        <div className="text-center mb-8 sm:mb-12">
+          <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="font-pixel text-fluid-h2 text-primary mb-2">JOURNEY SO FAR</motion.h2>
+          <p className="text-secondary font-semibold text-[10px] sm:text-xs">Creative milestones and collaborations.</p>
         </div>
 
-        <div className="relative flex flex-col gap-12 lg:gap-20">
-          {/* Central Line - Mobile logic handled via absolute positioning */}
-          <div className="absolute left-6 lg:left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-primary/10" />
-
+        <div className="flex flex-col gap-6 sm:gap-10 relative">
+          <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-primary/10 hidden sm:block" />
           {experiences.map((exp, i) => (
-            <motion.div 
-              key={exp.id} 
-              initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }} 
-              whileInView={{ opacity: 1, x: 0 }} 
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ type: "spring", stiffness: 80 }}
-              className={`relative flex flex-col lg:flex-row items-center gap-8 lg:gap-0 ${i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`}
+            <motion.div key={exp.id} initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="relative w-full bg-surface border-2 sm:border-3 border-primary rounded-xl p-4 sm:p-5 flex flex-col md:flex-row gap-4 shadow-[4px_4px_0px_var(--color-primary)] hover:translate-y-[-2px] transition-transform"
             >
-              {/* Connector Point */}
-              <div className="absolute left-6 lg:left-1/2 -translate-x-1/2 w-6 h-6 bg-white border-4 border-primary rounded-full z-20 shadow-[0_0_0_8px_rgba(0,0,0,0.03)]" />
-
-              {/* Card Container */}
-              <div className={`w-full lg:w-[45%] pl-16 lg:pl-0 ${i % 2 === 0 ? "lg:pr-12 text-left lg:text-right" : "lg:pl-12 text-left"}`}>
-                <motion.div 
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="bg-white border-3 border-primary rounded-3xl p-6 sm:p-8 shadow-[8px_8px_0px_var(--color-primary)] hover:shadow-[12px_12px_0px_var(--color-primary)] transition-all flex flex-col gap-4 relative overflow-hidden"
-                >
-                  {/* Icon Badge */}
-                  <div className={`w-14 h-14 shrink-0 bg-background border-2 border-primary rounded-2xl flex items-center justify-center text-3xl shadow-[4px_4px_0px_var(--color-primary)] ${i % 2 === 0 ? "lg:self-end" : "lg:self-start"}`}>
-                    {exp.icon}
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-accent-blue uppercase tracking-widest bg-accent-blue/5 px-2 py-1 rounded-md">{exp.period}</span>
-                    <h3 className="font-pixel text-fluid-h2 text-primary pt-2 uppercase">{exp.role}</h3>
-                    <p className="text-secondary font-bold text-sm uppercase tracking-tighter opacity-60">{exp.company}</p>
-                  </div>
-
-                  <p className="text-primary/70 text-sm font-medium leading-relaxed">
-                    {exp.desc}
-                  </p>
-
-                  {/* Tool Badges */}
-                  <div className={`flex flex-wrap gap-2 pt-2 ${i % 2 === 0 ? "lg:justify-end" : "lg:justify-start"}`}>
-                    {exp.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 bg-surface border-2 border-primary rounded-lg text-[10px] font-bold shadow-[2px_2px_0px_var(--color-primary)]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Accent Highlight */}
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-[0.05] pointer-events-none rotate-45 translate-x-12 -translate-y-12 bg-primary" />
-                </motion.div>
+              <div className="w-10 h-10 shrink-0 bg-white border-2 border-primary rounded-lg flex items-center justify-center text-xl shadow-[2px_2px_0px_var(--color-primary)]">{exp.icon}</div>
+              <div className="flex-1">
+                <div className="flex justify-between items-start mb-2 gap-2">
+                  <div><h3 className="font-pixel text-[10px] sm:text-xs font-bold text-primary uppercase">{exp.role}</h3><p className="text-[8px] sm:text-[9px] font-bold text-secondary uppercase">{exp.company}</p></div>
+                  <span className="px-2 py-0.5 bg-primary/5 border border-primary rounded-full text-[7px] sm:text-[8px] font-bold">{exp.period}</span>
+                </div>
+                <p className="text-secondary font-semibold text-[9px] sm:text-[10px] md:text-xs leading-relaxed mb-3">{exp.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {exp.tags.map((tag) => <span key={tag} className="px-1.5 py-0.5 bg-white border border-primary rounded text-[6px] sm:text-[7px] font-bold uppercase shadow-[1px_1px_0px_var(--color-primary)]">{tag}</span>)}
+                </div>
               </div>
-              
-              {/* Spacer for reverse layout alignment */}
-              <div className="hidden lg:block lg:w-[45%]" />
             </motion.div>
           ))}
         </div>
