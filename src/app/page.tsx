@@ -3,6 +3,7 @@ import CaseStudies from "@/components/CaseStudies";
 import ExperienceSection from "@/components/ExperienceSection";
 import AboutSection from "@/components/AboutSection";
 import ToolboxSection from "@/components/ToolboxSection";
+import AIToolboxSection from "@/components/AIToolboxSection";
 import FooterSection from "@/components/FooterSection";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -25,6 +26,10 @@ export default function Home() {
 
       <ScrollReveal delay={0.1}>
         <ToolboxSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.1}>
+        <AIToolboxSection />
       </ScrollReveal>
 
       <FooterSection />

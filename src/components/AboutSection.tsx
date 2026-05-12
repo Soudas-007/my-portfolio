@@ -19,11 +19,13 @@ export default function AboutSection() {
       <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-center z-10 relative">
         {/* Left: Desk Visual - Smaller scale */}
         <div 
+          id="about-visual"
           className="w-full lg:w-1/2 relative h-[200px] sm:h-[300px] flex items-center justify-center cursor-pointer"
           onMouseEnter={() => window.dispatchEvent(new CustomEvent("mascot-wave", { detail: true }))}
           onMouseLeave={() => window.dispatchEvent(new CustomEvent("mascot-wave", { detail: false }))}
         >
           <motion.div
+            id="about-laptop"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
