@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import CustomCursor from "@/components/CustomCursor";
 import GlobalCompanion from "@/components/GlobalCompanion";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -34,6 +35,7 @@ export default function RootLayout({
         <CustomCursor />
         <GlobalCompanion />
         {children}
+        <Analytics />
       </body>
     </html>
   );
